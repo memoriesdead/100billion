@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'TikTokFont';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/TikTokFont-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'TikTokFont';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/TikTokFont-Semibold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'TikTokFont';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/TikTokFont-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'TikTokDisplayFont';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/TikTokDisplayFont-Bold.woff2') format('woff2');
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 345 72% 46%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 345 72% 46%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'TikTokFont', sans-serif;
+  }
+}
+
+.tiktok-logo {
+  fill: currentColor;
+  color: white;
+}
+
+.tiktok-button {
+  @apply bg-primary text-white font-semibold py-3 px-12 rounded-sm hover:bg-primary/90 transition-colors;
+}
