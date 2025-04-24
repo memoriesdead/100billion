@@ -815,8 +815,7 @@ export default function MessagesPage() {
         }
     };
     // Only depend on stable values like IDs. Access dynamic state via refs or functional updates.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedConversationId, user?.id, fetchUserProfile]);
+  }, [selectedConversationId, user?.id, fetchUserProfile]); // Add selectedConversationId to deps
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -844,14 +843,15 @@ export default function MessagesPage() {
   // Determine the 'other user' for the header based on selectedConversation or targetUserProfile
   // Moved this useMemo hook before the early returns to fix conditional hook call error
   const otherUserForHeader = useMemo(() => {
-      if (selectedConversation) {
+      // Add null check for user before accessing user.id
+      if (selectedConversation && user) {
           const otherUserId = getOtherParticipantId(selectedConversation, user.id);
           return otherUserId ? participantProfiles[otherUserId] : null;
       } else if (targetUserProfile) {
           return targetUserProfile;
       }
       return null;
-  }, [selectedConversation, targetUserProfile, user?.id, participantProfiles]);
+  }, [selectedConversation, targetUserProfile, user, participantProfiles]); // Added user to deps
 
   const filteredConversations = useMemo(() => {
       // Now check the currentUserId variable derived from user

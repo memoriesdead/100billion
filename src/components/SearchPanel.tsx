@@ -40,6 +40,7 @@ export function SearchPanel({
   const panelRef = useRef<HTMLDivElement>(null); // Ref for the panel itself
 
   // --- Debounced Fetching for Suggestions ---
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedFetchSuggestions = useCallback(
     debounce(async (query: string) => {
       if (query.trim().length < 1) {

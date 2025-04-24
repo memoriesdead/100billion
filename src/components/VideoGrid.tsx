@@ -214,9 +214,8 @@ export function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion 
                 price={post.price}
                 currency={post.currency}
                 stripe_price_id={post.stripe_price_id}
-                isLocked={isSubscriptionLocked}
-                isPaidContent={post.is_private} // Pass directly (null becomes undefined)
-                initialIsLiked={false}
+                isLocked={isSubscriptionLocked === null ? undefined : isSubscriptionLocked}
+                isPaidContent={post.is_private === null ? undefined : post.is_private} // Convert null to undefined
               />
             );
           } else if (post.type === 'image' && post.image_url) {
@@ -238,8 +237,8 @@ export function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion 
                 price={post.price}
                 currency={post.currency}
                 stripe_price_id={post.stripe_price_id}
-                isLocked={isSubscriptionLocked}
-                isPaidContent={post.is_private} // Pass directly (null becomes undefined)
+                isLocked={isSubscriptionLocked === null ? undefined : isSubscriptionLocked} // Convert null to undefined
+                isPaidContent={post.is_private === null ? undefined : post.is_private} // Convert null to undefined
               />
             );
           } else {
