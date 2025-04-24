@@ -25,6 +25,12 @@ type Conversation = Database['public']['Tables']['conversations']['Row'] & {
     unreadCount?: { [userId: string]: number }; // Add unreadCount back
 };
 
+// Interface for presence payload to fix 'any' type
+interface PresencePayload {
+  typing?: boolean;
+  [key: string]: any; // Allow other potential properties
+}
+
 /* Fallback Interfaces if generated types are not configured/working
 interface UserProfile {
   id: string;
@@ -253,14 +259,7 @@ const MessageComposer: React.FC<{
     }
   };
 
-  // Separate useEffect for typing timeout cleanup
-  useEffect(() => {
-    return () => {
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
-    };
-  }, []); // This useEffect is for the typing timeout cleanup, no external dependencies needed
+  // Removed redundant useEffect for typingTimeoutRef cleanup
 
   const handleSendMessage = () => {
     if (message.trim() && !disabled) {
@@ -533,41 +532,47 @@ export default function MessagesPage() {
     initialFetch();
 
     // 2. Realtime Subscription
-    const handleConversationUpdate = async (payload: RealtimePostgresChangesPayload<any>) => { // Use any temporarily if exact type causes issues
+    const handleConversationUpdate = async (payload: RealtimePostgresChangesPayload<Conversation>) => {
       console.log('Conversation change received:', payload);
-      const newConv = payload.new as Conversation;
-      const oldConv = payload.old as Conversation; // Might be needed for DELETE
+      const newConv = payload.new; // Type is inferred
+      const oldConv = payload.old; // Type is inferred
 
       // Fetch profiles for the affected conversation if it's an INSERT or UPDATE
-      let convWithProfiles = newConv;
-      if (payload.eventType !== 'DELETE' && newConv) {
+      let convWithProfiles: Conversation | null = null; // Initialize as null
+      // Ensure newConv exists and is a valid Conversation object before fetching profiles
+      if (payload.eventType !== 'DELETE' && newConv && 'id' in newConv) {
           convWithProfiles = await fetchConversationProfiles(newConv);
       }
 
 
       setConversations(currentConversations => {
         let updatedConversations = [...currentConversations];
-        const existingIndex = updatedConversations.findIndex(c => c.id === (newConv?.id ?? oldConv?.id));
+        // Use type guard for accessing id
+        const convId = (newConv && 'id' in newConv) ? newConv.id : (oldConv && 'id' in oldConv) ? oldConv.id : null;
+        const existingIndex = convId ? updatedConversations.findIndex(c => c.id === convId) : -1;
 
         if (payload.eventType === 'INSERT' && convWithProfiles) {
+          // Ensure convWithProfiles is not null and index is valid
           if (existingIndex === -1) {
             updatedConversations.push(convWithProfiles);
           } else {
-             // Already exists? Update it just in case
-             updatedConversations[existingIndex] = convWithProfiles;
+             // Already exists? Update it just in case (ensure convWithProfiles is not null)
+             if (convWithProfiles) updatedConversations[existingIndex] = convWithProfiles;
           }
         } else if (payload.eventType === 'UPDATE' && convWithProfiles) {
-          if (existingIndex !== -1) {
+          // Ensure convWithProfiles is not null and index is valid
+          if (existingIndex !== -1 && convWithProfiles) {
             updatedConversations[existingIndex] = convWithProfiles;
-          } else {
+          } else if (convWithProfiles) { // Only push if convWithProfiles is valid
             // Received update for a convo not in list? Add it.
             updatedConversations.push(convWithProfiles);
           }
-        } else if (payload.eventType === 'DELETE' && oldConv) {
-          // Use the ID from the 'old' payload for delete
-          updatedConversations = updatedConversations.filter(c => c.id !== oldConv.id);
+        } else if (payload.eventType === 'DELETE' && oldConv && 'id' in oldConv) {
+          // Use the ID from the 'old' payload for delete, ensure oldConv.id exists
+          const deleteId = oldConv.id;
+          updatedConversations = updatedConversations.filter(c => c.id !== deleteId);
           // If the deleted conversation was selected, deselect it
-          if (selectedConversationId === oldConv.id) {
+          if (selectedConversationId === deleteId) {
               setSelectedConversationId(null);
               setMessages([]); // Clear messages
           }
@@ -675,22 +680,27 @@ export default function MessagesPage() {
     initialFetchMessages();
 
     // 2. Realtime Subscription for new messages in this conversation
-    const handleNewMessage = async (payload: RealtimePostgresChangesPayload<any>) => { // Use any temporarily
+    const handleNewMessage = async (payload: RealtimePostgresChangesPayload<Message>) => {
         console.log('Message change received:', payload);
         if (payload.eventType === 'INSERT') {
-            const newMessage = payload.new as Message;
+            const newMessage = payload.new; // Type is inferred
             // Ensure the sender's profile is fetched if not already cached
-            await fetchUserProfile(newMessage.sender_uid);
-            // Add message only if it doesn't already exist (prevents duplicates from initial fetch + subscription)
-            console.log("--- handleNewMessage: Received new message data ---", newMessage); // Log received message
-            setMessages(currentMessages => {
-                if (!currentMessages.some(msg => msg.id === newMessage.id)) {
-                    console.log("--- handleNewMessage: Adding new message to state ---");
-                    return [...currentMessages, newMessage];
-                }
-                console.log("--- handleNewMessage: Message already exists in state ---");
-                return currentMessages; // Already exists, no change
-            });
+            // Check if newMessage is not null before accessing properties
+            if (newMessage) {
+                await fetchUserProfile(newMessage.sender_uid);
+                // Add message only if it doesn't already exist (prevents duplicates from initial fetch + subscription)
+                console.log("--- handleNewMessage: Received new message data ---", newMessage); // Log received message
+                setMessages(currentMessages => {
+                    if (!currentMessages.some(msg => msg.id === newMessage.id)) {
+                        console.log("--- handleNewMessage: Adding new message to state ---");
+                        return [...currentMessages, newMessage];
+                    }
+                    console.log("--- handleNewMessage: Message already exists in state ---");
+                    return currentMessages; // Already exists, no change
+                });
+            } else {
+                 console.warn("--- handleNewMessage: Received INSERT event with null payload.new ---");
+            }
         } else {
             console.log("--- handleNewMessage: Received non-INSERT event ---", payload.eventType);
         }
@@ -718,8 +728,8 @@ export default function MessagesPage() {
 
         const otherUserPresence = presenceState[otherUserId];
         // Check if the other user's presence state exists and has a 'typing: true' field
-        // Cast `p` to `any` or a more specific type if known, to access dynamic properties like 'typing'
-        const isTyping = otherUserPresence?.some((p: any) => p.typing === true) ?? false;
+        // Use the defined PresencePayload interface
+        const isTyping = otherUserPresence?.some((p: PresencePayload) => p.typing === true) ?? false;
         console.log(`--- handlePresenceSync: Other user (${otherUserId}) is typing: ${isTyping} ---`);
         setIsOtherUserTyping(isTyping);
     };
@@ -802,7 +812,7 @@ export default function MessagesPage() {
         }
     };
     // Only depend on stable values like IDs. Access dynamic state via refs or functional updates.
-  }, [selectedConversationId, user?.id, fetchUserProfile]); // Added selectedConversationId and fetchUserProfile
+  }, [selectedConversationId, user?.id, fetchUserProfile]); // Added selectedConversationId
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -1061,6 +1071,7 @@ export default function MessagesPage() {
   }
 
   // Determine the 'other user' for the header based on selectedConversation or targetUserProfile
+  // Moved this useMemo hook before the early returns to fix conditional hook call error
   const otherUserForHeader = useMemo(() => {
       if (selectedConversation) {
           const otherUserId = getOtherParticipantId(selectedConversation, user.id);
@@ -1071,6 +1082,12 @@ export default function MessagesPage() {
       return null;
   }, [selectedConversation, targetUserProfile, user?.id, participantProfiles]);
 
+  if (authLoading) {
+    return <div className="flex items-center justify-center h-full"><FiLoader className="animate-spin h-8 w-8 text-blue-500" /></div>;
+  }
+  if (!user) {
+    return <div className="flex items-center justify-center h-full text-center text-gray-500">Please log in to view your messages.</div>;
+  }
 
   return (
     <div className="flex flex-1 h-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden">

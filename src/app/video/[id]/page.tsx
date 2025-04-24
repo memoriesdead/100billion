@@ -170,9 +170,10 @@ export default function VideoDetailPage() {
         } else {
           setError("Video not found."); // Post itself not found
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
         console.error("Error fetching video data:", err);
-        setError(`Failed to load video: ${err.message}`);
+        setError(`Failed to load video: ${message}`);
       } finally {
         setLoading(false);
       }
@@ -226,9 +227,10 @@ export default function VideoDetailPage() {
          // Type assertion needed as we manually constructed the joined type
          setComments(commentsWithProfiles as CommentWithProfile[]);
 
-       } catch (err: any) {
+       } catch (err: unknown) {
+         const message = err instanceof Error ? err.message : String(err);
          console.error("Error fetching comments:", err);
-         setCommentError(`Failed to load comments: ${err.message}`);
+         setCommentError(`Failed to load comments: ${message}`);
          setComments([]);
        } finally {
          setLoadingComments(false);
@@ -299,9 +301,10 @@ export default function VideoDetailPage() {
          )
        );
 
-     } catch (err: any) {
+     } catch (err: unknown) {
+       const message = err instanceof Error ? err.message : String(err);
        console.error("Error posting comment:", err);
-       setCommentError(`Failed to post comment: ${err.message}`);
+       setCommentError(`Failed to post comment: ${message}`);
        // Revert optimistic update on error
        setComments(current => current.filter(c => c.id !== optimisticComment.id));
        setNewComment(commentToPost.text); // Put text back in input

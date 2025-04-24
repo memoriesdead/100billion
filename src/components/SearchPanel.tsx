@@ -91,11 +91,12 @@ export function SearchPanel({
         console.error("Error fetching suggestions:", err);
         setSuggestions([]);
       } finally {
-        setIsSearchingSuggestions(false);
-      }
-    }, 300),
-    []
-  );
+       setIsSearchingSuggestions(false);
+       }
+     }, 300),
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+     []
+   );
 
   // --- Effects ---
   // Fetch suggestions when query changes

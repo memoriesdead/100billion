@@ -40,7 +40,7 @@ export default function Home() {
          if (data && data.length > 0) {
            // Restore original mapping logic
            // Use a more specific type for post within map
-           const allPosts = data.map((post: Tables<'posts'> & { profiles: any }) => ({
+           const allPosts = data.map((post: Tables<'posts'> & { profiles: Tables<'profiles'> }) => ({
               ...post,
               // Ensure profiles is an object or null
               profiles: (post.profiles && typeof post.profiles === 'object' && !Array.isArray(post.profiles)) ? post.profiles : null,

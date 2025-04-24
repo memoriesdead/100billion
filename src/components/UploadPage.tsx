@@ -57,7 +57,7 @@ export default function UploadPage() {
   const videoRef = useRef<HTMLVideoElement>(null); // Keep for potential future use, though ReactPlayer handles preview
 
   // Clear all states and start fresh
-  const resetState = () => {
+  const resetState = useCallback(() => {
     // Revoke previous object URL to prevent memory leaks
     if (mediaPreviewUrl) {
       URL.revokeObjectURL(mediaPreviewUrl);
@@ -79,10 +79,10 @@ export default function UploadPage() {
     setError(null);
     setIsValidDuration(null);
     setCurrentTabIndex(0);
-  };
+  }, [mediaPreviewUrl]); // Dependency for revokeObjectURL
 
   // Generic file validation
-  const validateFile = (file: File): boolean => {
+  const validateFile = useCallback((file: File): boolean => {
     // Check file size
     if (file.size > MAX_FILE_SIZE) {
       setError(`File size exceeds the ${MAX_FILE_SIZE / 1024 / 1024}MB limit.`);
@@ -96,40 +96,10 @@ export default function UploadPage() {
     }
 
     return true;
-  };
+  }, []); // setError is stable
 
-  // Process media file after selection
-  const processMediaFile = (file: File) => {
-    if (!validateFile(file)) return;
-
-    setMediaFile(file);
-    const url = URL.createObjectURL(file);
-    setMediaPreviewUrl(url);
-
-    // Determine media type
-    const type = file.type.startsWith('video/') ? 'video' : 'image';
-    setMediaType(type);
-
-    // Reset video-specific states
-    setIsValidDuration(null);
-    setVideoDuration(null);
-    setVideoThumbnail(null); // Reset thumbnail
-
-    if (type === 'video') {
-      // Generate thumbnail for video when possible
-      // Use a slight delay to ensure the video element can be processed
-      setTimeout(() => {
-        generateThumbnail(url);
-      }, 500);
-      // Duration check will happen via ReactPlayer's onDuration prop
-    } else {
-      // For images, duration is not applicable
-      setIsValidDuration(true); // Mark as valid for navigation purposes
-    }
-  };
-
-  // Generate video thumbnail
-  const generateThumbnail = (videoUrl: string) => {
+  // Generate video thumbnail (moved before processMediaFile)
+  const generateThumbnail = useCallback((videoUrl: string) => {
     const video = document.createElement('video');
     video.src = videoUrl;
     video.crossOrigin = 'anonymous'; // Important for cross-origin data fetching
@@ -157,7 +127,37 @@ export default function UploadPage() {
     video.onerror = (e) => {
       console.error("Error loading video for thumbnail generation:", e);
     };
-  };
+  }, []); // setVideoThumbnail is stable
+
+  // Process media file after selection
+  const processMediaFile = useCallback((file: File) => {
+    if (!validateFile(file)) return;
+
+    setMediaFile(file);
+    const url = URL.createObjectURL(file);
+    setMediaPreviewUrl(url);
+
+    // Determine media type
+    const type = file.type.startsWith('video/') ? 'video' : 'image';
+    setMediaType(type);
+
+    // Reset video-specific states
+    setIsValidDuration(null);
+    setVideoDuration(null);
+    setVideoThumbnail(null); // Reset thumbnail
+
+    if (type === 'video') {
+      // Generate thumbnail for video when possible
+      // Use a slight delay to ensure the video element can be processed
+      setTimeout(() => {
+        generateThumbnail(url);
+      }, 500);
+      // Duration check will happen via ReactPlayer's onDuration prop
+    } else {
+      // For images, duration is not applicable
+      setIsValidDuration(true); // Mark as valid for navigation purposes
+    }
+  }, [validateFile, generateThumbnail]); // Dependencies are memoized functions
 
   // Handle loaded metadata (video duration check) - Called by ReactPlayer
   const handleLoadedMetadata = (duration: number) => {
@@ -196,7 +196,8 @@ export default function UploadPage() {
       // The useDropzone hook provides `fileRejections` which can be used here
       // For simplicity, we rely on the validation within processMediaFile for now
     }
-  }, [processMediaFile, resetState]); // Added missing dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [processMediaFile, resetState]); // resetState depends on mediaPreviewUrl, processMediaFile is stable. This is correct.
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
     onDrop,
