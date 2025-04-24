@@ -28,7 +28,7 @@ type Conversation = Database['public']['Tables']['conversations']['Row'] & {
 // Interface for presence payload to fix 'any' type
 interface PresencePayload {
   typing?: boolean;
-  [key: string]: any; // Allow other potential properties
+  [key: string]: unknown; // Use unknown instead of any for better type safety
 }
 
 /* Fallback Interfaces if generated types are not configured/working
@@ -330,6 +330,9 @@ export default function MessagesPage() {
   const messageChannelRef = useRef<RealtimeChannel | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref for local user typing timeout broadcast
   const conversationsRef = useRef(conversations); // Ref to hold latest conversations state
+
+  // Define currentUserId based on user, outside the useMemo
+  const currentUserId = user?.id ?? null;
 
   // Update ref whenever conversations state changes
   useEffect(() => {
@@ -812,7 +815,8 @@ export default function MessagesPage() {
         }
     };
     // Only depend on stable values like IDs. Access dynamic state via refs or functional updates.
-  }, [selectedConversationId, user?.id, fetchUserProfile]); // Added selectedConversationId
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedConversationId, user?.id, fetchUserProfile]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -837,10 +841,26 @@ export default function MessagesPage() {
 
   // --- Derived State & Event Handlers ---
 
+  // Determine the 'other user' for the header based on selectedConversation or targetUserProfile
+  // Moved this useMemo hook before the early returns to fix conditional hook call error
+  const otherUserForHeader = useMemo(() => {
+      if (selectedConversation) {
+          const otherUserId = getOtherParticipantId(selectedConversation, user.id);
+          return otherUserId ? participantProfiles[otherUserId] : null;
+      } else if (targetUserProfile) {
+          return targetUserProfile;
+      }
+      return null;
+  }, [selectedConversation, targetUserProfile, user?.id, participantProfiles]);
+
   const filteredConversations = useMemo(() => {
+      // Now check the currentUserId variable derived from user
+      if (!currentUserId) {
+          return [];
+      }
       return conversations.filter(conversation => {
-          if (!user?.id) return false;
-          const otherUserId = getOtherParticipantId(conversation, user.id);
+          // Access the currentUserId variable (guaranteed string here)
+          const otherUserId = getOtherParticipantId(conversation, currentUserId);
           if (!otherUserId) return false;
           // Use cached profiles directly
           const otherUser = participantProfiles[otherUserId];
@@ -848,13 +868,17 @@ export default function MessagesPage() {
           if (!otherUser) return false;
           return otherUser.username?.toLowerCase().includes(searchTerm.toLowerCase());
       });
-  }, [conversations, user?.id, participantProfiles, searchTerm]);
+      // Depend on currentUserId instead of the user object
+  }, [conversations, currentUserId, participantProfiles, searchTerm]);
 
 
   // --- Create Conversation and Send First Message ---
-  const createConversationAndSendMessage = async (recipientId: string, content: string) => {
-    if (!user?.id || !recipientId || user.id === recipientId) {
-      toast.error("Invalid users for conversation.");
+  // Accept senderId as an argument
+  const createConversationAndSendMessage = async (recipientId: string, content: string, senderId: string) => {
+    // No need for currentUserId check here, senderId is passed explicitly
+    // Check recipient validity using the passed senderId
+    if (!recipientId || senderId === recipientId) {
+      toast.error("Invalid recipient for conversation.");
       return;
     }
     if (isCreatingConversation) return;
@@ -877,7 +901,7 @@ export default function MessagesPage() {
         const { data: existingConv, error: checkError } = await supabase
             .from('conversations')
             .select('id')
-            .contains('participant_uids', [user.id, recipientId])
+            .contains('participant_uids', [senderId, recipientId]) // Use passed senderId
             .limit(1)
             .maybeSingle();
 
@@ -890,8 +914,9 @@ export default function MessagesPage() {
             setTargetUserId(null); // Clear target user state
             setTargetUserProfile(null);
             if (window.innerWidth < 768) setMobileView('chat');
+            // Redundant check removed - currentUserId check at function start is sufficient
             // Now send the message to the existing conversation
-            await handleSendMessage(trimmedContent, existingConv.id); // Pass content and existing ID
+            await handleSendMessage(trimmedContent, senderId, existingConv.id); // Pass content, senderId, and existing ID
             toast.success("Existing conversation selected."); // Use toast.success
 
         } else {
@@ -900,9 +925,9 @@ export default function MessagesPage() {
             const { data: newConversationData, error: createConvError } = await supabase
                 .from('conversations')
                 .insert({
-                    participant_uids: [user.id, recipientId],
+                    participant_uids: [senderId, recipientId], // Use passed senderId
                     last_message_content: trimmedContent, // Initialize metadata
-                    last_message_sender_uid: user.id,
+                    last_message_sender_uid: senderId, // Use passed senderId
                     last_message_created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString(),
                 })
@@ -921,7 +946,7 @@ export default function MessagesPage() {
                 .from('messages')
                 .insert({
                     conversation_id: newConversationId,
-                    sender_uid: user.id,
+                    sender_uid: senderId, // Use passed senderId
                     content: trimmedContent,
                 });
 
@@ -952,20 +977,23 @@ export default function MessagesPage() {
 
 
   // --- Send Message (Handles Existing and New Conversations) ---
-  // Updated to optionally accept conversationId for the create->send flow
-  const handleSendMessage = async (content: string, convId?: string) => {
+  // Updated to optionally accept conversationId and explicitly require senderId
+  const handleSendMessage = async (content: string, senderId: string, convId?: string) => {
+    // No need for user null check here as senderId is passed explicitly
     const trimmedContent = content.trim();
     const conversationIdToSend = convId ?? selectedConversationId; // Use provided ID or selected one
 
-    if (!trimmedContent || !user?.id || !conversationIdToSend) {
-        console.error("Cannot send message: Missing content, user ID, or conversation ID.", { trimmedContent, userId: user?.id, conversationIdToSend });
-        toast.error("Cannot send message. Please select a conversation.");
+    // Check for required parameters
+    if (!trimmedContent || !senderId || !conversationIdToSend) {
+        console.error("Cannot send message: Missing content, sender ID, or conversation ID.", { trimmedContent, senderId, conversationIdToSend });
+        toast.error("Cannot send message. Please select a conversation and ensure you are logged in.");
         return;
     }
 
+    // Use the passed senderId
     const newMessageData = {
       conversation_id: conversationIdToSend,
-      sender_uid: user.id,
+      sender_uid: senderId,
       content: trimmedContent,
     };
 
@@ -983,7 +1011,7 @@ export default function MessagesPage() {
         .from('conversations')
         .update({
           last_message_content: trimmedContent,
-          last_message_sender_uid: user.id,
+          last_message_sender_uid: senderId, // Use passed senderId
           last_message_created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
@@ -1010,7 +1038,9 @@ export default function MessagesPage() {
 
   // --- Handle Typing Broadcast ---
   const handleTypingBroadcast = (isTyping: boolean) => {
-    if (!messageChannelRef.current || !user?.id) return;
+    // Separate null checks
+    if (!messageChannelRef.current || !user) return;
+    const userId = user.id; // Store id after check
 
     // Clear existing timeout if we're about to broadcast 'false'
     // This timeout is now only set below if isTyping is true
@@ -1070,17 +1100,7 @@ export default function MessagesPage() {
     return <div className="flex items-center justify-center h-full text-center text-gray-500">Please log in to view your messages.</div>;
   }
 
-  // Determine the 'other user' for the header based on selectedConversation or targetUserProfile
-  // Moved this useMemo hook before the early returns to fix conditional hook call error
-  const otherUserForHeader = useMemo(() => {
-      if (selectedConversation) {
-          const otherUserId = getOtherParticipantId(selectedConversation, user.id);
-          return otherUserId ? participantProfiles[otherUserId] : null;
-      } else if (targetUserProfile) {
-          return targetUserProfile;
-      }
-      return null;
-  }, [selectedConversation, targetUserProfile, user?.id, participantProfiles]);
+  // No need to define otherUserForHeader again, it's moved above
 
   if (authLoading) {
     return <div className="flex items-center justify-center h-full"><FiLoader className="animate-spin h-8 w-8 text-blue-500" /></div>;
@@ -1113,7 +1133,7 @@ export default function MessagesPage() {
                   conversation={conversation}
                   isSelected={selectedConversationId === conversation.id}
                   onClick={() => handleSelectConversation(conversation)}
-                  currentUserId={user.id}
+                  currentUserId={currentUserId!} // Use non-null assertion on currentUserId
                 />
               ))
             )}
@@ -1157,7 +1177,7 @@ export default function MessagesPage() {
                  )
               ) : (
                 messages.map((message, index) => {
-                  const isOwnMessage = message.sender_uid === user.id;
+                  const isOwnMessage = message.sender_uid === currentUserId; // Use currentUserId
                   // Determine if avatar should be shown:
                   // - For own messages: Always show (or apply sequence logic if needed later)
                   // - For received messages: Show if first message or sender changed
@@ -1179,10 +1199,12 @@ export default function MessagesPage() {
           <div className="flex-shrink-0">
             <MessageComposer
               onSendMessage={(content) => {
-                    if (selectedConversationId) {
-                        handleSendMessage(content);
-                    } else if (targetUserId) {
-                        createConversationAndSendMessage(targetUserId, content);
+                    // Ensure currentUserId and selectedConversationId are not null before calling handleSendMessage
+                    if (selectedConversationId && currentUserId) {
+                        handleSendMessage(content, currentUserId, selectedConversationId);
+                    } else if (targetUserId && currentUserId) { // Also ensure currentUserId is not null here
+                        // Pass currentUserId to createConversationAndSendMessage
+                        createConversationAndSendMessage(targetUserId, content, currentUserId);
                   }
               }}
               // Pass the typing handler

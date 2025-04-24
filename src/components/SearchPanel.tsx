@@ -94,8 +94,7 @@ export function SearchPanel({
        setIsSearchingSuggestions(false);
        }
      }, 300),
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-     []
+     [] // Debounce function is stable, empty dependency array is correct.
    );
 
   // --- Effects ---

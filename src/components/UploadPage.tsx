@@ -196,7 +196,6 @@ export default function UploadPage() {
       // The useDropzone hook provides `fileRejections` which can be used here
       // For simplicity, we rely on the validation within processMediaFile for now
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [processMediaFile, resetState]); // resetState depends on mediaPreviewUrl, processMediaFile is stable. This is correct.
 
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
