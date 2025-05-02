@@ -3823,8 +3823,8 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
     ]);
     // Profile Click Handler
     const handleProfileClick = ()=>{
-        // Navigate using the user's ID
-        router.push(`/profile/${userId}`);
+        // Navigate using the user's username
+        router.push(`/profile/${username}`);
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         ref: containerRef,
@@ -5108,7 +5108,16 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                 // Ensure data is correctly typed
                 setPosts(data || []);
             } catch (err) {
-                setError(err instanceof Error ? err.message : "Error fetching posts.");
+                console.error("Error fetching posts:", err); // Log the raw error
+                let errorMessage = "An unknown error occurred while fetching posts.";
+                if (err instanceof Error) {
+                    errorMessage = err.message;
+                } else if (typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string') {
+                    // Handle Supabase error objects or other objects with a message property
+                    errorMessage = err.message;
+                }
+                // Set a clear, user-friendly string state
+                setError(`Failed to load search results: ${errorMessage}`);
                 setPosts([]);
             } finally{
                 setLoading(false);
@@ -5127,7 +5136,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: "Loading posts..."
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 168,
+        lineNumber: 177,
         columnNumber: 23
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5135,7 +5144,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: error
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 169,
+        lineNumber: 178,
         columnNumber: 21
     }, this);
     if (posts.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5143,7 +5152,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: "No posts found."
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 170,
+        lineNumber: 179,
         columnNumber: 34
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -5178,7 +5187,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             hideProgressBar: hideProgressBar
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 183,
+                            lineNumber: 192,
                             columnNumber: 15
                         }, this);
                     } else if (post.type === 'image' && post.image_url) {
@@ -5203,7 +5212,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             isPaidContent: post.is_private ?? undefined
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 207,
+                            lineNumber: 216,
                             columnNumber: 15
                         }, this);
                     } else {
@@ -5212,7 +5221,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             children: "Invalid post data"
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 229,
+                            lineNumber: 238,
                             columnNumber: 27
                         }, this);
                     }
@@ -5237,12 +5246,12 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                             className: "h-10 w-10 text-white/80"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 251,
+                                            lineNumber: 260,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 250,
+                                        lineNumber: 259,
                                         columnNumber: 19
                                     }, this)
                                 ]
@@ -5266,14 +5275,14 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                                lineNumber: 264,
+                                                lineNumber: 273,
                                                 columnNumber: 22
                                             }, this),
                                             " "
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 260,
+                                        lineNumber: 269,
                                         columnNumber: 20
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -5291,24 +5300,24 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                             className: "animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 272,
+                                            lineNumber: 281,
                                             columnNumber: 86
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 272,
+                                            lineNumber: 281,
                                             columnNumber: 181
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 266,
+                                        lineNumber: 275,
                                         columnNumber: 20
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                lineNumber: 258,
+                                lineNumber: 267,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5325,17 +5334,17 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 282,
+                                                    lineNumber: 291,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                                lineNumber: 281,
+                                                lineNumber: 290,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 280,
+                                            lineNumber: 289,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -5349,20 +5358,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 287,
+                                                            lineNumber: 296,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Copy link"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 287,
+                                                            lineNumber: 296,
                                                             columnNumber: 60
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 286,
+                                                    lineNumber: 295,
                                                     columnNumber: 21
                                                 }, this),
                                                 isOwner ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -5374,25 +5383,25 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                                     className: "mr-2 h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 292,
+                                                                    lineNumber: 301,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: "Edit caption"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 292,
+                                                                    lineNumber: 301,
                                                                     columnNumber: 64
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 291,
+                                                            lineNumber: 300,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 294,
+                                                            lineNumber: 303,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -5403,20 +5412,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                                     className: "mr-2 h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 296,
+                                                                    lineNumber: 305,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: "Delete post"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 296,
+                                                                    lineNumber: 305,
                                                                     columnNumber: 62
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 295,
+                                                            lineNumber: 304,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
@@ -5427,49 +5436,49 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 301,
+                                                            lineNumber: 310,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Report post"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 301,
+                                                            lineNumber: 310,
                                                             columnNumber: 58
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 300,
+                                                    lineNumber: 309,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 285,
+                                            lineNumber: 294,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 279,
+                                    lineNumber: 288,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                lineNumber: 278,
+                                lineNumber: 287,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, post.id, true, {
                         fileName: "[project]/src/components/VideoGrid.tsx",
-                        lineNumber: 242,
+                        lineNumber: 251,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 174,
+                lineNumber: 183,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -5483,20 +5492,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: "Confirm Deletion"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 316,
+                                    lineNumber: 325,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Are you sure you want to permanently delete this post? This action cannot be undone."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 317,
+                                    lineNumber: 326,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 315,
+                            lineNumber: 324,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -5508,7 +5517,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 320,
+                                    lineNumber: 329,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -5518,24 +5527,24 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: deletePostMutation.isPending ? 'Deleting...' : 'Delete Post'
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 321,
+                                    lineNumber: 330,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 319,
+                            lineNumber: 328,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VideoGrid.tsx",
-                    lineNumber: 314,
+                    lineNumber: 323,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 313,
+                lineNumber: 322,
                 columnNumber: 7
             }, this),
             editingPost && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$EditPostModal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["EditPostModal"], {
@@ -5546,7 +5555,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                 onSaveSuccess: ()=>setEditingPost(null)
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 330,
+                lineNumber: 339,
                 columnNumber: 9
             }, this)
         ]
@@ -7082,21 +7091,24 @@ function UserProfilePage() {
             try {
                 // Fetch profile data using the user ID
                 const { data: profileData, error: profileError } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["supabase"].from('profiles').select('*') // Assuming counts are in profiles table
-                .eq('id', userId) // Fetch by ID instead of username
+                .ilike('username', userId) // Use case-insensitive search
                 .single();
                 if (profileError) throw profileError;
                 setProfile(profileData);
             } catch (err) {
-                const message = err instanceof Error ? err.message : String(err);
-                // Check if err is an object with a 'code' property before accessing it
+                console.error("Error loading profile:", err); // Log the raw error first
+                let errorMessage = "An unknown error occurred while loading the profile.";
                 const code = typeof err === 'object' && err !== null && 'code' in err ? String(err.code) : undefined;
-                console.error("Error loading profile:", err);
                 if (code === 'PGRST116') {
-                    setError(`Profile not found for user ID: ${userId}`); // Update error message
-                } else {
-                    // Use the extracted message variable here
-                    setError(message || "Failed to load profile.");
+                    errorMessage = `Profile not found for user ID: ${userId}`;
+                } else if (err instanceof Error) {
+                    errorMessage = err.message;
+                } else if (typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string') {
+                    // Handle Supabase error objects or other objects with a message property
+                    errorMessage = err.message;
                 }
+                // Set a clear, user-friendly string state
+                setError(`Failed to load profile: ${errorMessage}`);
             } finally{
                 setIsLoading(false);
             }
@@ -7194,7 +7206,7 @@ function UserProfilePage() {
                             className: "h-12 w-12 animate-spin text-primary"
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 195,
+                            lineNumber: 199,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7202,23 +7214,23 @@ function UserProfilePage() {
                             children: "Loading profile..."
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 196,
+                            lineNumber: 200,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                    lineNumber: 194,
+                    lineNumber: 198,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                lineNumber: 193,
+                lineNumber: 197,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/profile/[username]/page.tsx",
-            lineNumber: 192,
+            lineNumber: 196,
             columnNumber: 7
         }, this);
     }
@@ -7234,30 +7246,30 @@ function UserProfilePage() {
                             children: "Error"
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 209,
+                            lineNumber: 213,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDescription"], {
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 210,
+                            lineNumber: 214,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                    lineNumber: 208,
+                    lineNumber: 212,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                lineNumber: 207,
+                lineNumber: 211,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/profile/[username]/page.tsx",
-            lineNumber: 206,
+            lineNumber: 210,
             columnNumber: 7
         }, this);
     }
@@ -7272,7 +7284,7 @@ function UserProfilePage() {
                             children: "Profile Not Found"
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 223,
+                            lineNumber: 227,
                             columnNumber: 14
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$alert$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDescription"], {
@@ -7283,23 +7295,23 @@ function UserProfilePage() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 225,
+                            lineNumber: 229,
                             columnNumber: 14
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                    lineNumber: 222,
+                    lineNumber: 226,
                     columnNumber: 12
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                lineNumber: 221,
+                lineNumber: 225,
                 columnNumber: 10
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/profile/[username]/page.tsx",
-            lineNumber: 220,
+            lineNumber: 224,
             columnNumber: 8
         }, this);
     }
@@ -7327,20 +7339,20 @@ function UserProfilePage() {
                         quality: 90
                     }, void 0, false, {
                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                        lineNumber: 241,
+                        lineNumber: 245,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
                     }, void 0, false, {
                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                        lineNumber: 243,
+                        lineNumber: 247,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                lineNumber: 236,
+                lineNumber: 240,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7370,7 +7382,7 @@ function UserProfilePage() {
                                         alt: profile.username ?? 'User'
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                        lineNumber: 255,
+                                        lineNumber: 259,
                                         columnNumber: 16
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AvatarFallback"], {
@@ -7378,18 +7390,18 @@ function UserProfilePage() {
                                         children: profile.name?.charAt(0)?.toUpperCase() ?? profile.username?.charAt(0)?.toUpperCase() ?? 'U'
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                        lineNumber: 256,
+                                        lineNumber: 260,
                                         columnNumber: 16
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                lineNumber: 254,
+                                lineNumber: 258,
                                 columnNumber: 14
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 253,
+                            lineNumber: 257,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7405,7 +7417,7 @@ function UserProfilePage() {
                                                     children: profile.name ?? 'User Name'
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                    lineNumber: 263,
+                                                    lineNumber: 267,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -7416,13 +7428,13 @@ function UserProfilePage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                    lineNumber: 264,
+                                                    lineNumber: 268,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                            lineNumber: 262,
+                                            lineNumber: 266,
                                             columnNumber: 15
                                         }, this),
                                         loggedInUser && profile && loggedInUser.id !== profile.id && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7437,26 +7449,26 @@ function UserProfilePage() {
                                                             className: "h-4 w-4 mr-2 animate-spin"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                            lineNumber: 270,
+                                                            lineNumber: 274,
                                                             columnNumber: 40
                                                         }, this) : isFollowing ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UserCheck$3e$__["UserCheck"], {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                            lineNumber: 270,
+                                                            lineNumber: 274,
                                                             columnNumber: 106
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UserPlus$3e$__["UserPlus"], {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                            lineNumber: 270,
+                                                            lineNumber: 274,
                                                             columnNumber: 147
                                                         }, this),
                                                         isFollowLoading ? 'Processing...' : isFollowing ? 'Followed' : 'Follow'
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                    lineNumber: 269,
+                                                    lineNumber: 273,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -7467,14 +7479,14 @@ function UserProfilePage() {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                            lineNumber: 274,
+                                                            lineNumber: 278,
                                                             columnNumber: 21
                                                         }, this),
                                                         " Message"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                    lineNumber: 273,
+                                                    lineNumber: 277,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -7484,24 +7496,24 @@ function UserProfilePage() {
                                                         className: "h-5 w-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                        lineNumber: 276,
+                                                        lineNumber: 280,
                                                         columnNumber: 55
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                    lineNumber: 276,
+                                                    lineNumber: 280,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                            lineNumber: 268,
+                                            lineNumber: 272,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                    lineNumber: 261,
+                                    lineNumber: 265,
                                     columnNumber: 13
                                 }, this),
                                 profile.bio && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -7509,7 +7521,7 @@ function UserProfilePage() {
                                     children: profile.bio
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                    lineNumber: 281,
+                                    lineNumber: 285,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7521,7 +7533,7 @@ function UserProfilePage() {
                                                 className: "h-4 w-4 mr-1"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                lineNumber: 285,
+                                                lineNumber: 289,
                                                 columnNumber: 52
                                             }, this),
                                             " Joined ",
@@ -7529,12 +7541,12 @@ function UserProfilePage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                        lineNumber: 285,
+                                        lineNumber: 289,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 287,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -7548,37 +7560,12 @@ function UserProfilePage() {
                                                     children: profile.following_count?.toLocaleString() ?? '0'
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                    lineNumber: 291,
-                                                    columnNumber: 18
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-sm text-muted-foreground",
-                                                    children: "Following"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                    lineNumber: 292,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                            lineNumber: 290,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex flex-col",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "font-bold",
-                                                    children: profile.followers_count?.toLocaleString() ?? '0'
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/profile/[username]/page.tsx",
                                                     lineNumber: 295,
                                                     columnNumber: 18
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "text-sm text-muted-foreground",
-                                                    children: "Followers"
+                                                    children: "Following"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
                                                     lineNumber: 296,
@@ -7589,28 +7576,53 @@ function UserProfilePage() {
                                             fileName: "[project]/src/app/profile/[username]/page.tsx",
                                             lineNumber: 294,
                                             columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex flex-col",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "font-bold",
+                                                    children: profile.followers_count?.toLocaleString() ?? '0'
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/profile/[username]/page.tsx",
+                                                    lineNumber: 299,
+                                                    columnNumber: 18
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-sm text-muted-foreground",
+                                                    children: "Followers"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/profile/[username]/page.tsx",
+                                                    lineNumber: 300,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/profile/[username]/page.tsx",
+                                            lineNumber: 298,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                    lineNumber: 289,
+                                    lineNumber: 293,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 260,
+                            lineNumber: 264,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                    lineNumber: 248,
+                    lineNumber: 252,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                lineNumber: 246,
+                lineNumber: 250,
                 columnNumber: 7
             }, this),
             " ",
@@ -7634,14 +7646,14 @@ function UserProfilePage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 312,
                                                 columnNumber: 76
                                             }, this),
                                             " Content"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                        lineNumber: 308,
+                                        lineNumber: 312,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -7652,25 +7664,25 @@ function UserProfilePage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                                lineNumber: 309,
+                                                lineNumber: 313,
                                                 columnNumber: 73
                                             }, this),
                                             " Home"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                        lineNumber: 309,
+                                        lineNumber: 313,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                lineNumber: 307,
+                                lineNumber: 311,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 306,
+                            lineNumber: 310,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -7682,41 +7694,41 @@ function UserProfilePage() {
                                 hideProgressBar: true
                             }, void 0, false, {
                                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                lineNumber: 315,
+                                lineNumber: 319,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 314,
+                            lineNumber: 318,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
                             value: "home",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ProfileHomeFeed$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                                lineNumber: 319,
+                                lineNumber: 323,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/profile/[username]/page.tsx",
-                            lineNumber: 317,
+                            lineNumber: 321,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/profile/[username]/page.tsx",
-                    lineNumber: 305,
+                    lineNumber: 309,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/profile/[username]/page.tsx",
-                lineNumber: 304,
+                lineNumber: 308,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/profile/[username]/page.tsx",
-        lineNumber: 234,
+        lineNumber: 238,
         columnNumber: 5
     }, this);
 }

@@ -3823,8 +3823,8 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
     ]);
     // Profile Click Handler
     const handleProfileClick = ()=>{
-        // Navigate using the user's ID
-        router.push(`/profile/${userId}`);
+        // Navigate using the user's username
+        router.push(`/profile/${username}`);
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         ref: containerRef,
@@ -5108,7 +5108,16 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                 // Ensure data is correctly typed
                 setPosts(data || []);
             } catch (err) {
-                setError(err instanceof Error ? err.message : "Error fetching posts.");
+                console.error("Error fetching posts:", err); // Log the raw error
+                let errorMessage = "An unknown error occurred while fetching posts.";
+                if (err instanceof Error) {
+                    errorMessage = err.message;
+                } else if (typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string') {
+                    // Handle Supabase error objects or other objects with a message property
+                    errorMessage = err.message;
+                }
+                // Set a clear, user-friendly string state
+                setError(`Failed to load search results: ${errorMessage}`);
                 setPosts([]);
             } finally{
                 setLoading(false);
@@ -5127,7 +5136,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: "Loading posts..."
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 168,
+        lineNumber: 177,
         columnNumber: 23
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5135,7 +5144,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: error
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 169,
+        lineNumber: 178,
         columnNumber: 21
     }, this);
     if (posts.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5143,7 +5152,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: "No posts found."
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 170,
+        lineNumber: 179,
         columnNumber: 34
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -5178,7 +5187,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             hideProgressBar: hideProgressBar
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 183,
+                            lineNumber: 192,
                             columnNumber: 15
                         }, this);
                     } else if (post.type === 'image' && post.image_url) {
@@ -5203,7 +5212,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             isPaidContent: post.is_private ?? undefined
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 207,
+                            lineNumber: 216,
                             columnNumber: 15
                         }, this);
                     } else {
@@ -5212,7 +5221,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             children: "Invalid post data"
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 229,
+                            lineNumber: 238,
                             columnNumber: 27
                         }, this);
                     }
@@ -5237,12 +5246,12 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                             className: "h-10 w-10 text-white/80"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 251,
+                                            lineNumber: 260,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 250,
+                                        lineNumber: 259,
                                         columnNumber: 19
                                     }, this)
                                 ]
@@ -5266,14 +5275,14 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                                lineNumber: 264,
+                                                lineNumber: 273,
                                                 columnNumber: 22
                                             }, this),
                                             " "
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 260,
+                                        lineNumber: 269,
                                         columnNumber: 20
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -5291,24 +5300,24 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                             className: "animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 272,
+                                            lineNumber: 281,
                                             columnNumber: 86
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 272,
+                                            lineNumber: 281,
                                             columnNumber: 181
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 266,
+                                        lineNumber: 275,
                                         columnNumber: 20
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                lineNumber: 258,
+                                lineNumber: 267,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5325,17 +5334,17 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 282,
+                                                    lineNumber: 291,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                                lineNumber: 281,
+                                                lineNumber: 290,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 280,
+                                            lineNumber: 289,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -5349,20 +5358,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 287,
+                                                            lineNumber: 296,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Copy link"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 287,
+                                                            lineNumber: 296,
                                                             columnNumber: 60
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 286,
+                                                    lineNumber: 295,
                                                     columnNumber: 21
                                                 }, this),
                                                 isOwner ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -5374,25 +5383,25 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                                     className: "mr-2 h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 292,
+                                                                    lineNumber: 301,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: "Edit caption"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 292,
+                                                                    lineNumber: 301,
                                                                     columnNumber: 64
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 291,
+                                                            lineNumber: 300,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 294,
+                                                            lineNumber: 303,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -5403,20 +5412,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                                     className: "mr-2 h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 296,
+                                                                    lineNumber: 305,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: "Delete post"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 296,
+                                                                    lineNumber: 305,
                                                                     columnNumber: 62
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 295,
+                                                            lineNumber: 304,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
@@ -5427,49 +5436,49 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 301,
+                                                            lineNumber: 310,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Report post"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 301,
+                                                            lineNumber: 310,
                                                             columnNumber: 58
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 300,
+                                                    lineNumber: 309,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 285,
+                                            lineNumber: 294,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 279,
+                                    lineNumber: 288,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                lineNumber: 278,
+                                lineNumber: 287,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, post.id, true, {
                         fileName: "[project]/src/components/VideoGrid.tsx",
-                        lineNumber: 242,
+                        lineNumber: 251,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 174,
+                lineNumber: 183,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -5483,20 +5492,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: "Confirm Deletion"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 316,
+                                    lineNumber: 325,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Are you sure you want to permanently delete this post? This action cannot be undone."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 317,
+                                    lineNumber: 326,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 315,
+                            lineNumber: 324,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -5508,7 +5517,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 320,
+                                    lineNumber: 329,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -5518,24 +5527,24 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: deletePostMutation.isPending ? 'Deleting...' : 'Delete Post'
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 321,
+                                    lineNumber: 330,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 319,
+                            lineNumber: 328,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VideoGrid.tsx",
-                    lineNumber: 314,
+                    lineNumber: 323,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 313,
+                lineNumber: 322,
                 columnNumber: 7
             }, this),
             editingPost && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$EditPostModal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["EditPostModal"], {
@@ -5546,7 +5555,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                 onSaveSuccess: ()=>setEditingPost(null)
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 330,
+                lineNumber: 339,
                 columnNumber: 9
             }, this)
         ]

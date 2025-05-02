@@ -479,8 +479,8 @@ const formatTime = (timeInSeconds: number): string => {
 
   // Profile Click Handler
   const handleProfileClick = () => {
-    // Navigate using the user's ID
-    router.push(`/profile/${userId}`);
+    // Navigate using the user's username
+    router.push(`/profile/${username}`);
    };
 
    return ( // Ensure return statement is present

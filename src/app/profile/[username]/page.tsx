@@ -87,21 +87,25 @@ export default function UserProfilePage() {
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*') // Assuming counts are in profiles table
-          .eq('id', userId) // Fetch by ID instead of username
+          .ilike('username', userId) // Use case-insensitive search
           .single();
         if (profileError) throw profileError;
         setProfile(profileData as ProfileData);
       } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        // Check if err is an object with a 'code' property before accessing it
+        console.error("Error loading profile:", err); // Log the raw error first
+        let errorMessage = "An unknown error occurred while loading the profile.";
         const code = typeof err === 'object' && err !== null && 'code' in err ? String(err.code) : undefined;
-        console.error("Error loading profile:", err);
+
         if (code === 'PGRST116') {
-             setError(`Profile not found for user ID: ${userId}`); // Update error message
-        } else {
-             // Use the extracted message variable here
-             setError(message || "Failed to load profile.");
+          errorMessage = `Profile not found for user ID: ${userId}`;
+        } else if (err instanceof Error) {
+          errorMessage = err.message;
+        } else if (typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string') {
+          // Handle Supabase error objects or other objects with a message property
+          errorMessage = err.message;
         }
+        // Set a clear, user-friendly string state
+        setError(`Failed to load profile: ${errorMessage}`);
       } finally {
         setIsLoading(false);
       }

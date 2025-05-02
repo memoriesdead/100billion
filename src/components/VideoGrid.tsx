@@ -155,7 +155,16 @@ export function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion 
         setPosts((data as PostWithProfile[]) || []);
 
       } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : "Error fetching posts.");
+        console.error("Error fetching posts:", err); // Log the raw error
+        let errorMessage = "An unknown error occurred while fetching posts.";
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        } else if (typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string') {
+          // Handle Supabase error objects or other objects with a message property
+          errorMessage = err.message;
+        }
+        // Set a clear, user-friendly string state
+        setError(`Failed to load search results: ${errorMessage}`);
         setPosts([]);
       } finally {
         setLoading(false);
