@@ -2,7 +2,7 @@
 
 import { VideoGrid } from "./VideoGrid"; // Import VideoGrid
 
-// ExplorePage now simply renders the VideoGrid, similar to the main page
+// ExplorePage now renders the VideoGrid, disables click-to-play, and hides the progress bar
 export default function ExplorePage() {
-  return <VideoGrid />;
+  return <VideoGrid disableClickToPlay={true} hideProgressBar={true} />;
 }

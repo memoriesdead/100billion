@@ -399,10 +399,12 @@ export default function VideoDetailPage() {
         {/* Top Section: Creator Info & Caption */}
         <div className="p-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
-            <Link href={`/profile/${username}`} className="flex items-center gap-2 group">
+            {/* Use userId for the link href */}
+            <Link href={`/profile/${postData.user_id}`} className="flex items-center gap-2 group">
               <Avatar className="w-10 h-10">
                 <AvatarImage src={profilePic ?? undefined} alt={username} />
-                <AvatarFallback>{username.charAt(0).toUpperCase()}</AvatarFallback>
+                {/* Display username if available, otherwise fallback */}
+                <AvatarFallback>{username?.charAt(0).toUpperCase() ?? 'U'}</AvatarFallback>
               </Avatar>
               <div>
                 <p className="font-semibold group-hover:underline">{username}</p>

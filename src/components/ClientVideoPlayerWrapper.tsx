@@ -25,6 +25,8 @@ interface ClientVideoPlayerWrapperProps {
   stripe_price_id?: string | null;
   isLocked?: boolean; // Locked by subscription or sale
   isPaidContent?: boolean | null | undefined; // Allow null as well
+  disableClickToPlay?: boolean; // Add prop from VerticalVideoPlayer
+  hideProgressBar?: boolean; // Add prop to pass down
 }
 
 // Wrap the component with React.memo to prevent unnecessary re-renders

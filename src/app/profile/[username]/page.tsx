@@ -28,7 +28,9 @@ type ProfileData = Tables<'profiles'> | null;
 
 export default function UserProfilePage() {
   const router = useRouter();
-  const { username } = useParams();
+  // Treat the 'username' param as 'userId' due to folder naming convention
+  const { username: userIdParam } = useParams();
+  const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam; // Ensure userId is a string
   const [profile, setProfile] = useState<ProfileData>(null);
   const { user: loggedInUser } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -69,10 +71,10 @@ export default function UserProfilePage() {
     }
   }, [loggedInUser, profile]);
 
-  // Fetch profile data
+  // Fetch profile data using userId
   useEffect(() => {
-    if (!username || typeof username !== 'string') {
-      setError("Invalid username.");
+    if (!userId || typeof userId !== 'string') {
+      setError("Invalid user ID.");
       setIsLoading(false);
       return;
     }
@@ -81,11 +83,11 @@ export default function UserProfilePage() {
       setError(null);
       setProfile(null);
       try {
-        // Fetch profile data including counts which should be updated by triggers
+        // Fetch profile data using the user ID
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .select('*') // Assuming counts are in profiles table
-          .ilike('username', username)
+          .eq('id', userId) // Fetch by ID instead of username
           .single();
         if (profileError) throw profileError;
         setProfile(profileData as ProfileData);
@@ -95,7 +97,7 @@ export default function UserProfilePage() {
         const code = typeof err === 'object' && err !== null && 'code' in err ? String(err.code) : undefined;
         console.error("Error loading profile:", err);
         if (code === 'PGRST116') {
-             setError(`Profile not found for @${username}`);
+             setError(`Profile not found for user ID: ${userId}`); // Update error message
         } else {
              // Use the extracted message variable here
              setError(message || "Failed to load profile.");
@@ -105,7 +107,7 @@ export default function UserProfilePage() {
       }
     };
     loadProfileData();
-  }, [username]);
+  }, [userId]); // Depend on userId
 
   // Fetch initial follow status
   useEffect(() => {
@@ -219,7 +221,8 @@ export default function UserProfilePage() {
          <div className="container max-w-3xl mx-auto px-4 py-12">
            <Alert>
              <AlertTitle>Profile Not Found</AlertTitle>
-             <AlertDescription>The profile for @{username} could not be loaded.</AlertDescription>
+             {/* Display ID in error if profile not found */}
+             <AlertDescription>The profile for user ID {userId} could not be loaded.</AlertDescription>
            </Alert>
          </div>
        </MainLayout>
@@ -295,9 +298,10 @@ export default function UserProfilePage() {
             </div>
           </div>
         </motion.div>
+      </div> {/* Closing the container div here */}
 
-        {/* Main content area with Tabs - Reverted to original tabs */}
-        <div className="mb-16">
+      {/* Main content area with Tabs - Moved outside the container */}
+      <div className="mb-16">
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="border-b">
               <TabsList className="justify-start h-12">
@@ -308,7 +312,7 @@ export default function UserProfilePage() {
             </div>
 
             <TabsContent value="content">
-              <VideoGrid userId={profile.id} allowDeletion={false} />
+              <VideoGrid userId={profile.id} allowDeletion={false} disableClickToPlay={true} hideProgressBar={true} />
             </TabsContent>
             <TabsContent value="home">
               {/* Render ProfileHomeFeed instead of the placeholder */}
@@ -317,7 +321,7 @@ export default function UserProfilePage() {
             {/* Removed Followers/Following Content */}
           </Tabs>
         </div>
-      </div>
+      {/* Removed the extra closing div that was for the container */}
     </MainLayout>
   );
 }

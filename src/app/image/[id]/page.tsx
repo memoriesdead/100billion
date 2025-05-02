@@ -239,8 +239,10 @@ export default function ImageDetailPage() {
        <div className="w-[400px] lg:w-[500px] border-l border-border bg-background flex flex-col h-full">
           <div className="p-4 border-b border-border">
              <div className="flex items-center justify-between mb-3">
-               <Link href={`/profile/${post.profiles?.username || ''}`} className="flex items-center gap-2 group">
+               {/* Use userId for the link href */}
+               <Link href={`/profile/${post.user_id}`} className="flex items-center gap-2 group">
                  <Avatar className="w-10 h-10"><AvatarImage src={post.profiles?.profile_picture_url || undefined} alt={post.profiles?.username || 'User'} /><AvatarFallback>{post.profiles?.username?.charAt(0).toUpperCase() || 'U'}</AvatarFallback></Avatar>
+                 {/* Display username if available */}
                  <div><p className="font-semibold group-hover:underline">{post.profiles?.username || 'Unknown User'}</p></div>
                </Link>
                {!isOwner && <Button variant="outline" size="sm">Follow</Button>}

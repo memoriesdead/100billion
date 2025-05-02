@@ -1,0 +1,16 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/stripe/create-checkout-session/route": "/api/stripe/create-checkout-session",
+  "/api/stripe/create-item-checkout-session/route": "/api/stripe/create-item-checkout-session",
+  "/following/page": "/following",
+  "/image/[id]/page": "/image/[id]",
+  "/page": "/",
+  "/messages/page": "/messages",
+  "/explore/page": "/explore",
+  "/profile/[username]/page": "/profile/[username]",
+  "/profile/page": "/profile",
+  "/profile/edit/page": "/profile/edit",
+  "/profile/edit-picture/page": "/profile/edit-picture",
+  "/upload/page": "/upload",
+  "/video/[id]/page": "/video/[id]"
+}

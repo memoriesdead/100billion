@@ -3,19 +3,19 @@
 import Link from 'next/link';
 // Removed Input import
 import { Button } from "@/components/ui/button";
-import { FaEllipsisV, FaGoogle } from "react-icons/fa"; // Removed FaSearch
+import React, { useState } from 'react'; // Import useState
+import { FaEllipsisV, FaGoogle } from "react-icons/fa";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation'; // Keep for potential future use? Or remove if unused.
-import type React from 'react';
+import { useRouter } from 'next/navigation';
+import { SignupFlow } from './auth/SignupFlow'; // Import the signup flow component
+import { LoginModal } from './auth/LoginModal'; // Import the login modal component
 
-// Removed HeaderProps interface
-
-export function Header() { // Removed props
+export function Header() {
   const { user, loading, signInWithGoogle, signOut } = useAuth();
   const router = useRouter();
-
-  // Removed all search-related state and handlers
+  const [isSignupOpen, setIsSignupOpen] = useState(false); // State for signup modal
+  const [isLoginOpen, setIsLoginOpen] = useState(false);   // State for login modal
 
   // Auth handlers remain the same
   const handleSignIn = async () => {
@@ -44,7 +44,8 @@ export function Header() { // Removed props
           <Button disabled>Loading...</Button>
         ) : user ? (
           <>
-             <Link href={`/profile/${user.user_metadata?.username || user.id}`} passHref>
+             {/* Ensure profile link uses userId */}
+             <Link href={`/profile/${user.id}`} passHref>
                 <Avatar className="h-8 w-8 cursor-pointer">
                   <AvatarImage
                     src={user.user_metadata?.avatar_url || undefined}
@@ -60,16 +61,35 @@ export function Header() { // Removed props
             </Button>
           </>
         ) : (
-          <Button onClick={handleSignIn} className="tiktok-button px-4 py-2 flex items-center gap-2">
-            {/* Wrap content in a span to prevent potential nesting issues */}
-            <span><FaGoogle /> Log in</span>
-          </Button>
+          <>
+            {/* Login Button (Opens Modal) */}
+            <Button variant="outline" onClick={() => setIsLoginOpen(true)}>
+              Log in
+            </Button>
+            {/* Signup button removed, signup is accessed via Login modal */}
+            {/* Optional: Keep Google Sign-in as a separate button or move into modals */}
+            {/* <Button onClick={handleSignIn} variant="outline" size="icon" aria-label="Log in with Google">
+              <FaGoogle />
+            </Button> */}
+          </>
         )}
 
         <Button variant="ghost" size="icon">
           <FaEllipsisV />
         </Button>
       </div>
+
+      {/* Render Modals */}
+      <SignupFlow
+        isOpen={isSignupOpen}
+        onOpenChange={setIsSignupOpen}
+        // onSwitchToLogin={() => { setIsSignupOpen(false); setIsLoginOpen(true); }} // Add switch handler
+      />
+      <LoginModal
+        isOpen={isLoginOpen}
+        onOpenChange={setIsLoginOpen}
+        onSwitchToSignup={() => { setIsLoginOpen(false); setIsSignupOpen(true); }} // Add switch handler
+      />
     </header>
   );
 }

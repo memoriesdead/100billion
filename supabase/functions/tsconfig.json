@@ -1,0 +1,34 @@
+{
+  // Inherit settings from the root tsconfig.json if desired,
+  // but often it's cleaner to define Edge Function settings separately.
+  // "extends": "../../tsconfig.json", // Optional inheritance
+
+  "compilerOptions": {
+    // Deno-specific settings
+    "target": "esnext", // Use modern ES features
+    "module": "esnext", // Use ES modules
+    "lib": ["esnext", "deno.ns"], // Crucial: Include Deno's standard library types
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true, // Often needed when mixing environments
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node", // Deno uses Node-like resolution for URLs
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true, // Allow '.ts' imports
+    "noEmit": true, // Required when using allowImportingTsExtensions
+
+    // You might not need paths if functions are self-contained
+    // "paths": {
+    //   "@/*": ["../../src/*"] // Adjust path relative to this tsconfig
+    // }
+  },
+  "include": [
+    "./**/*.ts", // Include all .ts files within this directory and subdirectories
+    "../_shared/**/*.ts" // Include shared utilities if they exist
+  ],
+  "exclude": [
+    // Exclude node_modules if any were locally installed here (unlikely for functions)
+    // "node_modules"
+  ]
+}

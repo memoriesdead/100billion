@@ -71,7 +71,7 @@ export function ImageCard({
 
   // Handler for profile click
   const handleProfileClick = () => {
-    router.push('/profile'); // Navigate to the main profile page
+    router.push(`/profile/${userId}`); // Navigate using the user's ID
   };
 
   // Determine lock status
