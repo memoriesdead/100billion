@@ -302,10 +302,9 @@ export default function UserProfilePage() {
             </div>
           </div>
         </motion.div>
-      </div> {/* Closing the container div here */}
 
-      {/* Main content area with Tabs - Moved outside the container */}
-      <div className="mb-16">
+        {/* Main content area with Tabs - Moved INSIDE the container */}
+        <div className="mb-16">
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="border-b">
               <TabsList className="justify-start h-12">
@@ -316,7 +315,14 @@ export default function UserProfilePage() {
             </div>
 
             <TabsContent value="content">
-              <VideoGrid userId={profile.id} allowDeletion={false} disableClickToPlay={true} hideProgressBar={true} />
+              {/* Pass custom grid classes for profile page */}
+              <VideoGrid
+                userId={profile.id}
+                allowDeletion={false}
+                disableClickToPlay={true}
+                hideProgressBar={true}
+                gridColsClass="grid-cols-1 sm:grid-cols-2 md:grid-cols-3" // Fewer columns for profile
+              />
             </TabsContent>
             <TabsContent value="home">
               {/* Render ProfileHomeFeed instead of the placeholder */}
@@ -325,7 +331,7 @@ export default function UserProfilePage() {
             {/* Removed Followers/Following Content */}
           </Tabs>
         </div>
-      {/* Removed the extra closing div that was for the container */}
+      </div> {/* Closing the container div here */}
     </MainLayout>
   );
 }

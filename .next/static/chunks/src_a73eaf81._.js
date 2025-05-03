@@ -3637,6 +3637,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/supabaseClient.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/context/AuthContext.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/avatar.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/play.js [app-client] (ecmascript) <export default as Play>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/volume-2.js [app-client] (ecmascript) <export default as Volume2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__VolumeX$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/volume-x.js [app-client] (ecmascript) <export default as VolumeX>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/lock.js [app-client] (ecmascript) <export default as Lock>");
@@ -4280,6 +4281,24 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             lineNumber: 524,
                             columnNumber: 16
                         }, this),
+                        !isPlaying && !disableClickToPlay && !isContentLocked && objectUrl && !isLoading && !errorState && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer z-20",
+                            onClick: togglePlayPause,
+                            "aria-label": "Play video",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$play$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Play$3e$__["Play"], {
+                                size: 64,
+                                className: "text-white/80",
+                                fill: "currentColor"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
+                                lineNumber: 542,
+                                columnNumber: 20
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
+                            lineNumber: 537,
+                            columnNumber: 18
+                        }, this),
                         !isContentLocked && objectUrl && !isLoading && !errorState && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: `absolute bottom-4 left-4 z-20 text-white pointer-events-auto max-w-[calc(100%-80px)]`,
                             children: [
@@ -4305,20 +4324,20 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                                     alt: username ?? 'User profile'
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                                    lineNumber: 543,
+                                                    lineNumber: 554,
                                                     columnNumber: 24
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                                     children: username?.charAt(0).toUpperCase() ?? 'U'
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                                    lineNumber: 544,
+                                                    lineNumber: 555,
                                                     columnNumber: 24
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 542,
+                                            lineNumber: 553,
                                             columnNumber: 22
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4329,13 +4348,13 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 546,
+                                            lineNumber: 557,
                                             columnNumber: 22
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 538,
+                                    lineNumber: 549,
                                     columnNumber: 20
                                 }, this),
                                 caption && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4343,7 +4362,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                     children: caption
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 548,
+                                    lineNumber: 559,
                                     columnNumber: 32
                                 }, this),
                                 is_for_sale && !isContentLocked && price && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -4355,13 +4374,13 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 550,
+                                    lineNumber: 561,
                                     columnNumber: 22
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 537,
+                            lineNumber: 548,
                             columnNumber: 18
                         }, this)
                     ]
@@ -4392,7 +4411,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             className: "absolute top-0 left-0 h-full w-full bg-gray-500/30"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 579,
+                                            lineNumber: 590,
                                             columnNumber: 24
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4403,7 +4422,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 580,
+                                            lineNumber: 591,
                                             columnNumber: 24
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4413,7 +4432,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 585,
+                                            lineNumber: 596,
                                             columnNumber: 24
                                         }, this),
                                         (isHovering || isScrubbing) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4425,13 +4444,13 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             children: formatTime(hoverTime)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 590,
+                                            lineNumber: 601,
                                             columnNumber: 26
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 569,
+                                    lineNumber: 580,
                                     columnNumber: 22
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4443,19 +4462,19 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 599,
+                                    lineNumber: 610,
                                     columnNumber: 22
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 567,
+                            lineNumber: 578,
                             columnNumber: 20
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 562,
+                    lineNumber: 573,
                     columnNumber: 16
                 }, this),
                 objectUrl && !isLoading && !errorState && !isContentLocked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4468,19 +4487,19 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             size: 18
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 613,
+                            lineNumber: 624,
                             columnNumber: 29
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__["Volume2"], {
                             size: 18
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 613,
+                            lineNumber: 624,
                             columnNumber: 53
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 612,
+                    lineNumber: 623,
                     columnNumber: 16
                 }, this),
                 !isContentLocked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4506,13 +4525,13 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             variant: interactionVariant
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 620,
+                            lineNumber: 631,
                             columnNumber: 18
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 619,
+                    lineNumber: 630,
                     columnNumber: 16
                 }, this)
             ]

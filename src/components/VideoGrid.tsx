@@ -44,9 +44,18 @@ interface VideoGridProps {
   allowDeletion?: boolean;
   disableClickToPlay?: boolean;
   hideProgressBar?: boolean;
+  gridColsClass?: string; // New prop for custom grid columns
 }
 
-export function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false, disableClickToPlay = false, hideProgressBar = false }: VideoGridProps) {
+export function VideoGrid({
+  userId,
+  searchQuery,
+  followedUserIds,
+  allowDeletion = false,
+  disableClickToPlay = false,
+  hideProgressBar = false,
+  gridColsClass // Destructure the new prop
+}: VideoGridProps) {
   const router = useRouter();
   const { user: loggedInUser } = useAuth();
   const queryClient = useQueryClient();
@@ -178,9 +187,14 @@ export function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion 
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
   if (posts.length === 0) return <div className="text-center text-muted-foreground p-4">No posts found.</div>;
 
+  // Define default grid classes if custom ones aren't provided
+  const defaultGridClasses = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5";
+  const finalGridClasses = gridColsClass || defaultGridClasses;
+
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
+      {/* Use finalGridClasses for the grid layout */}
+      <div className={`grid ${finalGridClasses} gap-4 p-4`}>
         {posts.map((post) => {
           const isOwner = loggedInUser?.id === post.user_id;
           const isSubscriptionLocked = post.is_private && !isOwner;

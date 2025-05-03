@@ -428,10 +428,7 @@ export default function VideoDetailPage() {
                    <MessageCircle size={20} />
                    {comments_count ?? 0}
                 </button>
-                <button onClick={handleBookmark} className="flex items-center gap-1.5 text-sm hover:text-primary">
-                   <Bookmark size={20} fill={isBookmarked ? 'currentColor' : 'none'} />
-                   {/* Add bookmark count if available */} 0
-                </button>
+                {/* Bookmark button removed */}
              </div>
              <div className="flex items-center gap-2">
                 {/* TODO: Implement actual sharing options (e.g., social media) */}

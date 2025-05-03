@@ -1816,6 +1816,10 @@ body {
   background-color: #fffc;
 }
 
+.bg-black\/30 {
+  background-color: #0000004d;
+}
+
 .bg-gradient-to-l {
   background-image: linear-gradient(to left, var(--tw-gradient-stops));
 }

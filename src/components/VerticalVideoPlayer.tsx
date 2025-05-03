@@ -532,6 +532,17 @@ const formatTime = (timeInSeconds: number): string => {
                  onError={(e) => console.error(`Video Error (ID: ${id}):`, (e.target as HTMLVideoElement).error)}
                />
 
+               {/* Conditional Play Button Overlay */}
+               {!isPlaying && !disableClickToPlay && !isContentLocked && objectUrl && !isLoading && !errorState && (
+                 <div
+                   className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer z-20"
+                   onClick={togglePlayPause}
+                   aria-label="Play video"
+                 >
+                   <Play size={64} className="text-white/80" fill="currentColor" />
+                 </div>
+               )}
+
                {/* User Info & Caption - Moved to overlay video */}
                {!isContentLocked && objectUrl && !isLoading && !errorState && (
                  <div className={`absolute bottom-4 left-4 z-20 text-white pointer-events-auto max-w-[calc(100%-80px)]`}> {/* Position bottom-left, limit width */}

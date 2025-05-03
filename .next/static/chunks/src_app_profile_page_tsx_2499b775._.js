@@ -8,7 +8,7 @@
   "static/chunks/node_modules_react-icons_io_index_mjs_d35cf443._.js",
   "static/chunks/node_modules_react-icons_lib_74ccc930._.js",
   "static/chunks/node_modules_emoji-picker-react_dist_emoji-picker-react_esm_9953c09f.js",
-  "static/chunks/node_modules_0164efa0._.js",
+  "static/chunks/node_modules_f546c392._.js",
   "static/chunks/node_modules_react-image-crop_dist_ReactCrop_28221f5b.css"
 ],
     source: "dynamic"
