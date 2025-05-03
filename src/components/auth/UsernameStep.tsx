@@ -13,7 +13,7 @@ interface UsernameStepProps {
   isLoading: boolean;
 }
 
-// Basic debounce function using generics
+// Basic debounce function using generics (reverted constraint)
 function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null;
   return (...args: Parameters<T>) => {
