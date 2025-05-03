@@ -13,10 +13,10 @@ interface UsernameStepProps {
   isLoading: boolean;
 }
 
-// Basic debounce function
-function debounce(func: (...args: any[]) => void, wait: number) {
+// Basic debounce function using generics
+function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null;
-  return (...args: any[]) => {
+  return (...args: Parameters<T>) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
       func(...args);

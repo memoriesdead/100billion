@@ -107,9 +107,11 @@ export function ForYouPage() {
         setVideos([]);
       }
 
-    } catch (err: any) {
+    } catch (err: unknown) { // Use unknown instead of any
       console.error("Error fetching videos:", err);
-      setError(`Failed to load videos: ${err.message}`);
+      // Type check the error before accessing properties
+      const message = err instanceof Error ? err.message : String(err);
+      setError(`Failed to load videos: ${message}`);
     } finally {
       setLoading(false);
     }
