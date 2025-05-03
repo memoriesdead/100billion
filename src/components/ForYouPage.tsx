@@ -115,7 +115,7 @@ export function ForYouPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loggedInUser]); // Added loggedInUser dependency
 
   useEffect(() => {
     fetchVideos();

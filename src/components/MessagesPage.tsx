@@ -815,7 +815,7 @@ export default function MessagesPage() {
         }
     };
     // Only depend on stable values like IDs. Access dynamic state via refs or functional updates.
-  }, [selectedConversationId, user?.id, fetchUserProfile]); // Add selectedConversationId to deps
+  }, [selectedConversationId, user?.id, fetchUserProfile]); // Added selectedConversationId dependency
 
   // Scroll to bottom when messages change
   useEffect(() => {

@@ -180,7 +180,7 @@ export function VideoGrid({
       }
     };
     fetchPosts();
-  }, [userId, searchQuery, followedUserIds, supabase]); // Added supabase as dependency
+  }, [userId, searchQuery, followedUserIds]); // Removed supabase dependency
 
   // --- Render Logic ---
   if (loading) return <div className="text-center p-4">Loading posts...</div>;

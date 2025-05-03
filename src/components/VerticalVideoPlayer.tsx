@@ -326,7 +326,7 @@ const formatTime = (timeInSeconds: number): string => {
     document.addEventListener('mousemove', handleScrubMove);
     document.addEventListener('mouseup', handleScrubEnd);
   // Update dependencies: handleSeek is memoized, others are not but stable references
-  }, [handleSeek]);
+  }, [handleSeek, handleScrubMove, handleScrubEnd]); // Added handleScrubMove and handleScrubEnd
 
   // Cleanup global listeners on component unmount
   useEffect(() => {
@@ -336,7 +336,7 @@ const formatTime = (timeInSeconds: number): string => {
       document.removeEventListener('mouseup', handleScrubEnd);
     };
     return cleanup;
-   }, []); // Empty dependency array: cleanup runs once on unmount
+   }, [handleScrubMove, handleScrubEnd]); // Added handleScrubMove and handleScrubEnd
 
    // Temporarily comment out Intersection Observer and Watch Time Reporting Effect for debugging
    useEffect(() => {

@@ -83,7 +83,7 @@ export function UsernameStep({ onNext, onPrevious, isLoading }: UsernameStepProp
         // No explicit cleanup needed for this debounce implementation,
         // but good practice if timers were managed differently.
     };
-  }, [username]); // Rerun effect when username changes
+  }, [username, checkUsernameAvailability]); // Added checkUsernameAvailability dependency
 
   const handleNext = () => {
     if (isAvailable === false) {
