@@ -660,6 +660,7 @@ const formatPrice = (priceInCents, currency = 'usd')=>{
     }).format(priceInCents / 100);
 };
 // Helper function to format time (e.g., 0:05, 1:23)
+// Test comment
 const formatTime = (timeInSeconds)=>{
     if (isNaN(timeInSeconds) || timeInSeconds < 0) {
         return "0:00"; // Return default or error state
@@ -937,8 +938,10 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
         // Update dependencies: handleSeek is memoized, others are not but stable references
         }
     }["VerticalVideoPlayer.useCallback[handleMouseDown]"], [
-        handleSeek
-    ]);
+        handleSeek,
+        handleScrubMove,
+        handleScrubEnd
+    ]); // Added handleScrubMove and handleScrubEnd
     // Cleanup global listeners on component unmount
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "VerticalVideoPlayer.useEffect": ()=>{
@@ -951,7 +954,10 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
             }["VerticalVideoPlayer.useEffect.cleanup"];
             return cleanup;
         }
-    }["VerticalVideoPlayer.useEffect"], []); // Empty dependency array: cleanup runs once on unmount
+    }["VerticalVideoPlayer.useEffect"], [
+        handleScrubMove,
+        handleScrubEnd
+    ]); // Added handleScrubMove and handleScrubEnd
     // Temporarily comment out Intersection Observer and Watch Time Reporting Effect for debugging
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "VerticalVideoPlayer.useEffect": ()=>{
@@ -1157,7 +1163,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             className: "mb-3 opacity-80"
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 496,
+                            lineNumber: 497,
                             columnNumber: 16
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1165,7 +1171,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             children: isLockedForPurchase ? 'Purchase to View' : 'Subscribe to View'
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 497,
+                            lineNumber: 498,
                             columnNumber: 16
                         }, this),
                         isLockedForPurchase && price && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1174,13 +1180,13 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             children: formatPrice(price, currency ?? undefined)
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 501,
+                            lineNumber: 502,
                             columnNumber: 18
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 495,
+                    lineNumber: 496,
                     columnNumber: 14
                 }, this),
                 isLockedForPurchase && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1195,26 +1201,26 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             className: "mr-2 h-4 w-4 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 513,
+                            lineNumber: 514,
                             columnNumber: 30
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCart$3e$__["ShoppingCart"], {
                             className: "mr-2 h-4 w-4"
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 513,
+                            lineNumber: 514,
                             columnNumber: 82
                         }, this),
                         isBuying ? 'Processing...' : 'Buy'
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 507,
+                    lineNumber: 508,
                     columnNumber: 16
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-            lineNumber: 494,
+            lineNumber: 495,
             columnNumber: 12
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
             children: [
@@ -1228,12 +1234,12 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                 className: "h-8 w-8 animate-spin"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                lineNumber: 522,
+                                lineNumber: 523,
                                 columnNumber: 113
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 522,
+                            lineNumber: 523,
                             columnNumber: 30
                         }, this),
                         errorState && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1241,7 +1247,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             children: errorState
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 523,
+                            lineNumber: 524,
                             columnNumber: 31
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
@@ -1265,7 +1271,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             onError: (e)=>console.error(`Video Error (ID: ${id}):`, e.target.error)
                         }, objectUrl, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 524,
+                            lineNumber: 525,
                             columnNumber: 16
                         }, this),
                         !isPlaying && !disableClickToPlay && !isContentLocked && objectUrl && !isLoading && !errorState && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1278,12 +1284,12 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                 fill: "currentColor"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                lineNumber: 542,
+                                lineNumber: 543,
                                 columnNumber: 20
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 537,
+                            lineNumber: 538,
                             columnNumber: 18
                         }, this),
                         !isContentLocked && objectUrl && !isLoading && !errorState && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1311,20 +1317,20 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                                     alt: username ?? 'User profile'
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                                    lineNumber: 554,
+                                                    lineNumber: 555,
                                                     columnNumber: 24
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
                                                     children: username?.charAt(0).toUpperCase() ?? 'U'
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                                    lineNumber: 555,
+                                                    lineNumber: 556,
                                                     columnNumber: 24
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 553,
+                                            lineNumber: 554,
                                             columnNumber: 22
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1335,13 +1341,13 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 557,
+                                            lineNumber: 558,
                                             columnNumber: 22
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 549,
+                                    lineNumber: 550,
                                     columnNumber: 20
                                 }, this),
                                 caption && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1349,7 +1355,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                     children: caption
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 559,
+                                    lineNumber: 560,
                                     columnNumber: 32
                                 }, this),
                                 is_for_sale && !isContentLocked && price && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1361,26 +1367,26 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 561,
+                                    lineNumber: 562,
                                     columnNumber: 22
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 548,
+                            lineNumber: 549,
                             columnNumber: 18
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 521,
+                    lineNumber: 522,
                     columnNumber: 14
                 }, this),
-                !isContentLocked && objectUrl && !isLoading && !errorState && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                !isContentLocked && objectUrl && !isLoading && !errorState && !hideProgressBar && showControls && duration > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "relative flex-shrink-0 px-4 pb-2 pt-1 bg-black z-20",
                     children: [
                         " ",
-                        !hideProgressBar && showControls && duration > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "relative",
                             children: [
                                 " ",
@@ -1398,7 +1404,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             className: "absolute top-0 left-0 h-full w-full bg-gray-500/30"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 590,
+                                            lineNumber: 588,
                                             columnNumber: 24
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1409,7 +1415,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 591,
+                                            lineNumber: 589,
                                             columnNumber: 24
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1419,7 +1425,7 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 596,
+                                            lineNumber: 594,
                                             columnNumber: 24
                                         }, this),
                                         (isHovering || isScrubbing) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1431,14 +1437,14 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                             children: formatTime(hoverTime)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                            lineNumber: 601,
+                                            lineNumber: 599,
                                             columnNumber: 26
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 580,
-                                    columnNumber: 22
+                                    lineNumber: 578,
+                                    columnNumber: 20
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: `mt-1 text-white text-xs font-mono pointer-events-none select-none`,
@@ -1449,19 +1455,19 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                                    lineNumber: 610,
+                                    lineNumber: 608,
                                     columnNumber: 22
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 578,
-                            columnNumber: 20
+                            lineNumber: 576,
+                            columnNumber: 18
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 573,
+                    lineNumber: 574,
                     columnNumber: 16
                 }, this),
                 objectUrl && !isLoading && !errorState && !isContentLocked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1474,19 +1480,19 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             size: 18
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 624,
+                            lineNumber: 621,
                             columnNumber: 29
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__["Volume2"], {
                             size: 18
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 624,
+                            lineNumber: 621,
                             columnNumber: 53
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 623,
+                    lineNumber: 620,
                     columnNumber: 16
                 }, this),
                 !isContentLocked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1512,20 +1518,20 @@ function VerticalVideoPlayer({ id, username, verified, profilePictureUrl, captio
                             variant: interactionVariant
                         }, void 0, false, {
                             fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                            lineNumber: 631,
+                            lineNumber: 628,
                             columnNumber: 18
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-                    lineNumber: 630,
+                    lineNumber: 627,
                     columnNumber: 16
                 }, this)
             ]
         }, void 0, true)
     }, void 0, false, {
         fileName: "[project]/src/components/VerticalVideoPlayer.tsx",
-        lineNumber: 487,
+        lineNumber: 488,
         columnNumber: 8
     }, this); // Ensure closing parenthesis for return is present
 } // Ensure closing brace for component function is present
@@ -1552,7 +1558,6 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/supabaseClient.ts [app-client] (ecmascript)");
-// Import the standard VerticalVideoPlayer
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$VerticalVideoPlayer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/VerticalVideoPlayer.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/context/AuthContext.tsx [app-client] (ecmascript)");
@@ -1570,18 +1575,14 @@ function ForYouPage() {
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const videoRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(new Map()); // Use a Map for refs keyed by video ID
-    const [activeIndex, setActiveIndex] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0); // Index of the currently playing video
-    const { user: loggedInUser } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useContext"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AuthContext"]); // Get logged-in user
-    // Basic fetch function - replace with your actual FYP logic
+    const videoRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(new Map());
+    const [activeIndex, setActiveIndex] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const { user: loggedInUser } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useContext"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AuthContext"]);
     const fetchVideos = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "ForYouPage.useCallback[fetchVideos]": async ()=>{
             setLoading(true);
             setError(null);
             try {
-                // Example fetch: Get public, non-private videos, ordered by creation date
-                // You'll need to implement your actual FYP algorithm/query here
-                // This likely involves joining with profiles and potentially checking like status
                 const { data, error: fetchError } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('posts').select(`
           id,
           user_id,
@@ -1597,17 +1598,13 @@ function ForYouPage() {
           currency,
           stripe_price_id,
           profiles ( username, profile_picture_url )
-        `).eq('type', 'video') // Corrected column name from post_type to type
-                .eq('is_private', false) // Example: only public videos
-                .order('created_at', {
+        `).eq('type', 'video').eq('is_private', false).order('created_at', {
                     ascending: false
-                }).limit(10); // Example limit
+                }).limit(10);
                 if (fetchError) throw fetchError;
                 let postsWithLikeStatus = [];
-                // Handle potential null data more gracefully
                 if (data) {
-                    postsWithLikeStatus = data; // Initial data
-                    // Fetch like status for the current user if logged in
+                    postsWithLikeStatus = data;
                     if (loggedInUser) {
                         const postIds = data.map({
                             "ForYouPage.useCallback[fetchVideos].postIds": (post)=>post.id
@@ -1615,7 +1612,6 @@ function ForYouPage() {
                         const { data: likesData, error: likesError } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('likes').select('post_id').eq('user_id', loggedInUser.id).in('post_id', postIds);
                         if (likesError) {
                             console.error("Error fetching likes:", likesError);
-                        // Proceed without like status if fetch fails
                         } else if (likesData) {
                             const likedPostIds = new Set(likesData.map({
                                 "ForYouPage.useCallback[fetchVideos]": (like)=>like.post_id
@@ -1634,12 +1630,15 @@ function ForYouPage() {
                 }
             } catch (err) {
                 console.error("Error fetching videos:", err);
-                setError(`Failed to load videos: ${err.message}`);
+                const message = err instanceof Error ? err.message : String(err);
+                setError(`Failed to load videos: ${message}`);
             } finally{
                 setLoading(false);
             }
         }
-    }["ForYouPage.useCallback[fetchVideos]"], []);
+    }["ForYouPage.useCallback[fetchVideos]"], [
+        loggedInUser
+    ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ForYouPage.useEffect": ()=>{
             fetchVideos();
@@ -1647,16 +1646,13 @@ function ForYouPage() {
     }["ForYouPage.useEffect"], [
         fetchVideos
     ]);
-    // Effect to initialize/clear refs when videos change
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ForYouPage.useEffect": ()=>{
             videoRefs.current.clear();
-        // Optional: Pre-populate map keys if needed, though setting in render is usually fine
         }
     }["ForYouPage.useEffect"], [
         videos
     ]);
-    // Intersection Observer for active video detection
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ForYouPage.useEffect": ()=>{
             const observerOptions = {
@@ -1669,7 +1665,6 @@ function ForYouPage() {
                     entries.forEach({
                         "ForYouPage.useEffect.observerCallback": (entry)=>{
                             if (entry.isIntersecting) {
-                                // Find the index corresponding to the target element's video ID
                                 const targetElement = entry.target;
                                 const videoId = Array.from(videoRefs.current.entries()).find({
                                     "ForYouPage.useEffect.observerCallback": ([id, ref])=>ref === targetElement
@@ -1678,7 +1673,6 @@ function ForYouPage() {
                                     "ForYouPage.useEffect.observerCallback.index": (v)=>v.id === videoId
                                 }["ForYouPage.useEffect.observerCallback.index"]);
                                 if (index !== -1) {
-                                    // console.log(`Video ${index} (${videoId}) is active`);
                                     setActiveIndex(index);
                                 }
                             }
@@ -1687,14 +1681,12 @@ function ForYouPage() {
                 }
             }["ForYouPage.useEffect.observerCallback"];
             const observer = new IntersectionObserver(observerCallback, observerOptions);
-            // Observe all video refs stored in the map
             const refsToObserve = Array.from(videoRefs.current.values());
             refsToObserve.forEach({
                 "ForYouPage.useEffect": (ref)=>{
                     if (ref) observer.observe(ref);
                 }
             }["ForYouPage.useEffect"]);
-            // Cleanup
             return ({
                 "ForYouPage.useEffect": ()=>{
                     refsToObserve.forEach({
@@ -1709,7 +1701,30 @@ function ForYouPage() {
     }["ForYouPage.useEffect"], [
         videos,
         loading
-    ]); // Re-run when videos load or change
+    ]);
+    // Force body to have no padding/margin that could affect layout
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ForYouPage.useEffect": ()=>{
+            // Save original styling
+            const originalBodyStyle = {
+                margin: document.body.style.margin,
+                padding: document.body.style.padding,
+                overflow: document.body.style.overflow
+            };
+            // Apply clean styling to body
+            document.body.style.margin = '0';
+            document.body.style.padding = '0';
+            document.body.style.overflow = 'hidden';
+            // Restore original styling on unmount
+            return ({
+                "ForYouPage.useEffect": ()=>{
+                    document.body.style.margin = originalBodyStyle.margin;
+                    document.body.style.padding = originalBodyStyle.padding;
+                    document.body.style.overflow = originalBodyStyle.overflow;
+                }
+            })["ForYouPage.useEffect"];
+        }
+    }["ForYouPage.useEffect"], []);
     if (loading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "flex items-center justify-center h-screen w-full",
@@ -1717,12 +1732,12 @@ function ForYouPage() {
                 className: "h-12 w-12 animate-spin text-pink-500"
             }, void 0, false, {
                 fileName: "[project]/src/components/ForYouPage.tsx",
-                lineNumber: 172,
+                lineNumber: 174,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/ForYouPage.tsx",
-            lineNumber: 171,
+            lineNumber: 173,
             columnNumber: 7
         }, this);
     }
@@ -1735,77 +1750,123 @@ function ForYouPage() {
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/ForYouPage.tsx",
-            lineNumber: 179,
+            lineNumber: 181,
             columnNumber: 7
         }, this);
     }
-    return(// Ensure container uses h-full to inherit height correctly
-    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        ref: containerRef,
-        className: "w-full h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth bg-black hide-scrollbar",
+    // Main component return
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "fixed inset-0",
+        style: {
+            display: 'grid',
+            gridTemplateColumns: '172px 1fr',
+            padding: 0,
+            margin: 0,
+            overflow: 'hidden'
+        },
         children: [
-            videos.length === 0 && !loading && // Ensure empty state uses h-full
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center justify-center h-full w-full text-gray-500",
-                children: "No videos found."
+                className: "bg-transparent"
             }, void 0, false, {
                 fileName: "[project]/src/components/ForYouPage.tsx",
-                lineNumber: 193,
-                columnNumber: 9
+                lineNumber: 200,
+                columnNumber: 7
             }, this),
-            videos.map((video, index)=>// Assign ref to each video container using the Map
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    ref: (el)=>{
-                        if (el) videoRefs.current.set(video.id, el);
-                        else videoRefs.current.delete(video.id);
-                    },
-                    // Ensure snap items use h-full
-                    className: "w-full h-full snap-start flex justify-center relative bg-black",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$VerticalVideoPlayer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ // Use the standard player
-                    ["VerticalVideoPlayer"], {
-                        id: video.id,
-                        isActive: index === activeIndex,
-                        username: video.profiles?.username ?? 'unknown',
-                        // verified prop doesn't exist on player or schema
-                        profilePictureUrl: video.profiles?.profile_picture_url ?? undefined,
-                        caption: video.caption,
-                        videoSrc: video.video_url,
-                        posterSrc: video.thumbnail_url ?? undefined,
-                        // Pass actual counts as strings
-                        likes: String(video.likes_count ?? 0),
-                        comments: String(video.comments_count ?? 0),
-                        shares: "0",
-                        initialIsLiked: video.current_user_liked,
-                        isPrivate: video.is_private ?? undefined,
-                        isOwner: loggedInUser?.id === video.user_id,
-                        userId: video.user_id,
-                        is_for_sale: video.is_for_sale,
-                        price: video.price,
-                        currency: video.currency,
-                        stripe_price_id: video.stripe_price_id,
-                        // TODO: Implement actual lock status check (e.g., check subscriptions/purchases table for loggedInUser)
-                        isLocked: (video.is_private ?? false) && loggedInUser?.id !== video.user_id,
-                        showControls: true,
-                        isForYouPage: true,
-                        interactionVariant: "compact" // Pass the compact variant prop
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/ForYouPage.tsx",
-                        lineNumber: 208,
-                        columnNumber: 11
-                    }, this)
-                }, video.id || index, false, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                ref: containerRef,
+                className: "bg-black overflow-hidden",
+                style: {
+                    height: '100vh',
+                    width: '100%',
+                    padding: 0,
+                    margin: 0
+                },
+                children: videos.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-center justify-center h-full w-full text-gray-500",
+                    children: "No videos found."
+                }, void 0, false, {
                     fileName: "[project]/src/components/ForYouPage.tsx",
-                    lineNumber: 199,
-                    columnNumber: 9
-                }, this))
+                    lineNumber: 214,
+                    columnNumber: 11
+                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "w-full h-full overflow-y-auto snap-y snap-mandatory hide-scrollbar",
+                    style: {
+                        overscrollBehavior: 'none'
+                    },
+                    children: videos.map((video, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            ref: (el)=>{
+                                if (el) videoRefs.current.set(video.id, el);
+                                else videoRefs.current.delete(video.id);
+                            },
+                            className: "w-full h-screen snap-start snap-always",
+                            style: {
+                                position: 'relative',
+                                overflow: 'hidden'
+                            },
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                style: {
+                                    position: 'absolute',
+                                    inset: 0,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                },
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$VerticalVideoPlayer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["VerticalVideoPlayer"], {
+                                    id: video.id,
+                                    isActive: index === activeIndex,
+                                    username: video.profiles?.username ?? 'unknown',
+                                    profilePictureUrl: video.profiles?.profile_picture_url ?? undefined,
+                                    caption: video.caption,
+                                    videoSrc: video.video_url,
+                                    posterSrc: video.thumbnail_url ?? undefined,
+                                    likes: String(video.likes_count ?? 0),
+                                    comments: String(video.comments_count ?? 0),
+                                    shares: "0",
+                                    initialIsLiked: video.current_user_liked,
+                                    isPrivate: video.is_private ?? undefined,
+                                    isOwner: loggedInUser?.id === video.user_id,
+                                    userId: video.user_id,
+                                    is_for_sale: video.is_for_sale,
+                                    price: video.price,
+                                    currency: video.currency,
+                                    stripe_price_id: video.stripe_price_id,
+                                    isLocked: (video.is_private ?? false) && loggedInUser?.id !== video.user_id,
+                                    showControls: true,
+                                    isForYouPage: true,
+                                    interactionVariant: "compact"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/ForYouPage.tsx",
+                                    lineNumber: 244,
+                                    columnNumber: 19
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/ForYouPage.tsx",
+                                lineNumber: 235,
+                                columnNumber: 17
+                            }, this)
+                        }, video.id || index, false, {
+                            fileName: "[project]/src/components/ForYouPage.tsx",
+                            lineNumber: 223,
+                            columnNumber: 15
+                        }, this))
+                }, void 0, false, {
+                    fileName: "[project]/src/components/ForYouPage.tsx",
+                    lineNumber: 218,
+                    columnNumber: 11
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/components/ForYouPage.tsx",
+                lineNumber: 203,
+                columnNumber: 7
+            }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/ForYouPage.tsx",
-        lineNumber: 187,
+        lineNumber: 189,
         columnNumber: 5
-    }, this));
+    }, this);
 }
-_s(ForYouPage, "+L76hE0a4Kr9dzlTEcCiQ3PH2zA=");
+_s(ForYouPage, "cA0PvseES+YvebjOJb4BcMO6tlY=");
 _c = ForYouPage;
 var _c;
 __turbopack_context__.k.register(_c, "ForYouPage");
@@ -2301,23 +2362,28 @@ function Sidebar({ toggleSearchPanel, deactivateSearch }) {
                         lineNumber: 45,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$separator$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Separator"], {
-                        className: "my-4"
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "px-4 my-4",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$separator$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Separator"], {}, void 0, false, {
+                            fileName: "[project]/src/components/Sidebar.tsx",
+                            lineNumber: 66,
+                            columnNumber: 11
+                        }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 64,
+                        lineNumber: 65,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(NavGroup, {
                         title: "Following",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$FollowingList$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FollowingList"], {}, void 0, false, {
                             fileName: "[project]/src/components/Sidebar.tsx",
-                            lineNumber: 68,
+                            lineNumber: 71,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 67,
+                        lineNumber: 70,
                         columnNumber: 9
                     }, this)
                 ]
@@ -2352,13 +2418,13 @@ function NavItem({ href, icon, label, active, onClick }) {
                 children: label
             }, void 0, false, {
                 fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 90,
+                lineNumber: 93,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Sidebar.tsx",
-        lineNumber: 88,
+        lineNumber: 91,
         columnNumber: 5
     }, this);
 }
@@ -2372,7 +2438,7 @@ function NavGroup({ title, children }) {
                 children: title
             }, void 0, false, {
                 fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 103,
+                lineNumber: 106,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2380,13 +2446,13 @@ function NavGroup({ title, children }) {
                 children: children
             }, void 0, false, {
                 fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 104,
+                lineNumber: 107,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Sidebar.tsx",
-        lineNumber: 102,
+        lineNumber: 105,
         columnNumber: 5
     }, this);
 }
@@ -2398,7 +2464,7 @@ function NavLink({ href, children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/src/components/Sidebar.tsx",
-        lineNumber: 118,
+        lineNumber: 121,
         columnNumber: 5
     }, this);
 }
@@ -3117,7 +3183,8 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-// Basic debounce function
+// Basic debounce function using generics (reverted constraint)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function debounce(func, wait) {
     let timeout = null;
     return (...args)=>{
@@ -3185,8 +3252,9 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
             })["UsernameStep.useEffect"];
         }
     }["UsernameStep.useEffect"], [
-        username
-    ]); // Rerun effect when username changes
+        username,
+        checkUsernameAvailability
+    ]); // Added checkUsernameAvailability dependency
     const handleNext = ()=>{
         if (isAvailable === false) {
             setValidationError('Username is already taken.');
@@ -3220,7 +3288,7 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                         children: "Create username"
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                        lineNumber: 109,
+                        lineNumber: 110,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3235,7 +3303,7 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                                 "aria-describedby": "username-validation"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                                lineNumber: 111,
+                                lineNumber: 112,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3245,7 +3313,7 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                                         className: "h-4 w-4 animate-spin text-muted-foreground"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                                        lineNumber: 120,
+                                        lineNumber: 121,
                                         columnNumber: 30
                                     }, this),
                                     !isValidating && isAvailable === true && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3253,7 +3321,7 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                                         children: "Available"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                                        lineNumber: 121,
+                                        lineNumber: 122,
                                         columnNumber: 55
                                     }, this),
                                     !isValidating && isAvailable === false && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3261,19 +3329,19 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                                         children: "Taken"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 123,
                                         columnNumber: 56
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                                lineNumber: 119,
+                                lineNumber: 120,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                        lineNumber: 110,
+                        lineNumber: 111,
                         columnNumber: 9
                     }, this),
                     validationError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3282,13 +3350,13 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                         children: validationError
                     }, void 0, false, {
                         fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                        lineNumber: 125,
+                        lineNumber: 126,
                         columnNumber: 29
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                lineNumber: 108,
+                lineNumber: 109,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3298,7 +3366,7 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                 children: isLoading ? 'Signing up...' : 'Sign up'
             }, void 0, false, {
                 fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                lineNumber: 129,
+                lineNumber: 130,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3309,7 +3377,7 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                 children: "Skip"
             }, void 0, false, {
                 fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                lineNumber: 132,
+                lineNumber: 133,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3320,13 +3388,13 @@ function UsernameStep({ onNext, onPrevious, isLoading }) {
                 children: "Previous"
             }, void 0, false, {
                 fileName: "[project]/src/components/auth/UsernameStep.tsx",
-                lineNumber: 135,
+                lineNumber: 136,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/auth/UsernameStep.tsx",
-        lineNumber: 107,
+        lineNumber: 108,
         columnNumber: 5
     }, this);
 }
@@ -5702,7 +5770,8 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false, disableClickToPlay = false, hideProgressBar = false }) {
+function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false, disableClickToPlay = false, hideProgressBar = false, gridColsClass// Destructure the new prop
+ }) {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const { user: loggedInUser } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$context$2f$AuthContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
@@ -5867,16 +5936,15 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
     }["VideoGrid.useEffect"], [
         userId,
         searchQuery,
-        followedUserIds,
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabaseClient$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"]
-    ]); // Added supabase as dependency
+        followedUserIds
+    ]); // Removed supabase dependency
     // --- Render Logic ---
     if (loading) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "text-center p-4",
         children: "Loading posts..."
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 177,
+        lineNumber: 186,
         columnNumber: 23
     }, this);
     if (error) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5884,7 +5952,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: error
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 178,
+        lineNumber: 187,
         columnNumber: 21
     }, this);
     if (posts.length === 0) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5892,13 +5960,16 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
         children: "No posts found."
     }, void 0, false, {
         fileName: "[project]/src/components/VideoGrid.tsx",
-        lineNumber: 179,
+        lineNumber: 188,
         columnNumber: 34
     }, this);
+    // Define default grid classes if custom ones aren't provided
+    const defaultGridClasses = "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5";
+    const finalGridClasses = gridColsClass || defaultGridClasses;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4",
+                className: `grid ${finalGridClasses} gap-4 p-4`,
                 children: posts.map((post)=>{
                     const isOwner = loggedInUser?.id === post.user_id;
                     const isSubscriptionLocked = post.is_private && !isOwner;
@@ -5927,7 +5998,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             hideProgressBar: hideProgressBar
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 192,
+                            lineNumber: 206,
                             columnNumber: 15
                         }, this);
                     } else if (post.type === 'image' && post.image_url) {
@@ -5952,7 +6023,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             isPaidContent: post.is_private ?? undefined
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 216,
+                            lineNumber: 230,
                             columnNumber: 15
                         }, this);
                     } else {
@@ -5961,7 +6032,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                             children: "Invalid post data"
                         }, void 0, false, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 238,
+                            lineNumber: 252,
                             columnNumber: 27
                         }, this);
                     }
@@ -5986,12 +6057,12 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                             className: "h-10 w-10 text-white/80"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 260,
+                                            lineNumber: 274,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 259,
+                                        lineNumber: 273,
                                         columnNumber: 19
                                     }, this)
                                 ]
@@ -6015,14 +6086,14 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                                lineNumber: 273,
+                                                lineNumber: 287,
                                                 columnNumber: 22
                                             }, this),
                                             " "
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 269,
+                                        lineNumber: 283,
                                         columnNumber: 20
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -6040,24 +6111,24 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                             className: "animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 295,
                                             columnNumber: 86
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 295,
                                             columnNumber: 181
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/VideoGrid.tsx",
-                                        lineNumber: 275,
+                                        lineNumber: 289,
                                         columnNumber: 20
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                lineNumber: 267,
+                                lineNumber: 281,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6074,17 +6145,17 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 291,
+                                                    lineNumber: 305,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                                lineNumber: 290,
+                                                lineNumber: 304,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 289,
+                                            lineNumber: 303,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -6098,20 +6169,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 296,
+                                                            lineNumber: 310,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Copy link"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 296,
+                                                            lineNumber: 310,
                                                             columnNumber: 60
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 295,
+                                                    lineNumber: 309,
                                                     columnNumber: 21
                                                 }, this),
                                                 isOwner ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -6123,25 +6194,25 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                                     className: "mr-2 h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 301,
+                                                                    lineNumber: 315,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: "Edit caption"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 301,
+                                                                    lineNumber: 315,
                                                                     columnNumber: 64
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 300,
+                                                            lineNumber: 314,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 303,
+                                                            lineNumber: 317,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -6152,20 +6223,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                                     className: "mr-2 h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 305,
+                                                                    lineNumber: 319,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: "Delete post"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                                    lineNumber: 305,
+                                                                    lineNumber: 319,
                                                                     columnNumber: 62
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 304,
+                                                            lineNumber: 318,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
@@ -6176,49 +6247,49 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 310,
+                                                            lineNumber: 324,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Report post"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                                            lineNumber: 310,
+                                                            lineNumber: 324,
                                                             columnNumber: 58
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                                    lineNumber: 309,
+                                                    lineNumber: 323,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/VideoGrid.tsx",
-                                            lineNumber: 294,
+                                            lineNumber: 308,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 288,
+                                    lineNumber: 302,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/VideoGrid.tsx",
-                                lineNumber: 287,
+                                lineNumber: 301,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, post.id, true, {
                         fileName: "[project]/src/components/VideoGrid.tsx",
-                        lineNumber: 251,
+                        lineNumber: 265,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 183,
+                lineNumber: 197,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -6232,20 +6303,20 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: "Confirm Deletion"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 325,
+                                    lineNumber: 339,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Are you sure you want to permanently delete this post? This action cannot be undone."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 326,
+                                    lineNumber: 340,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 324,
+                            lineNumber: 338,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -6257,7 +6328,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: "Cancel"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 329,
+                                    lineNumber: 343,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -6267,24 +6338,24 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                                     children: deletePostMutation.isPending ? 'Deleting...' : 'Delete Post'
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/VideoGrid.tsx",
-                                    lineNumber: 330,
+                                    lineNumber: 344,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/VideoGrid.tsx",
-                            lineNumber: 328,
+                            lineNumber: 342,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/VideoGrid.tsx",
-                    lineNumber: 323,
+                    lineNumber: 337,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 322,
+                lineNumber: 336,
                 columnNumber: 7
             }, this),
             editingPost && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$EditPostModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["EditPostModal"], {
@@ -6295,7 +6366,7 @@ function VideoGrid({ userId, searchQuery, followedUserIds, allowDeletion = false
                 onSaveSuccess: ()=>setEditingPost(null)
             }, void 0, false, {
                 fileName: "[project]/src/components/VideoGrid.tsx",
-                lineNumber: 339,
+                lineNumber: 353,
                 columnNumber: 9
             }, this)
         ]
@@ -6326,6 +6397,7 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)"); // Import usePathname
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/Sidebar.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/Header.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SearchPanel$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/SearchPanel.tsx [app-client] (ecmascript)");
@@ -6339,11 +6411,13 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 function MainLayout({ children }) {
     _s();
     const [activeSearchQuery, setActiveSearchQuery] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [isSearchActive, setIsSearchActive] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isSearchPanelVisible, setIsSearchPanelVisible] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false); // State for the panel
+    const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])(); // Get the current path
     // Toggle search panel visibility
     const toggleSearchPanel = ()=>{
         setIsSearchPanelVisible((prev)=>!prev);
@@ -6368,12 +6442,12 @@ function MainLayout({ children }) {
                     deactivateSearch: deactivateSearch
                 }, void 0, false, {
                     fileName: "[project]/src/components/MainLayout.tsx",
-                    lineNumber: 39,
+                    lineNumber: 41,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/MainLayout.tsx",
-                lineNumber: 38,
+                lineNumber: 40,
                 columnNumber: 7
             }, this),
             isSearchPanelVisible && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SearchPanel$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SearchPanel"], {
@@ -6383,7 +6457,7 @@ function MainLayout({ children }) {
                 closePanel: ()=>setIsSearchPanelVisible(false)
             }, void 0, false, {
                 fileName: "[project]/src/components/MainLayout.tsx",
-                lineNumber: 47,
+                lineNumber: 49,
                 columnNumber: 10
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6394,44 +6468,50 @@ function MainLayout({ children }) {
                         className: `fixed top-0 right-0 transition-all duration-200 ease-in-out z-10 ${isSearchPanelVisible ? 'left-[540px]' : 'left-[240px]'}`,
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Header$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Header"], {}, void 0, false, {
                             fileName: "[project]/src/components/MainLayout.tsx",
-                            lineNumber: 59,
+                            lineNumber: 61,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/MainLayout.tsx",
-                        lineNumber: 58,
+                        lineNumber: 60,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "w-full pt-14 h-[calc(100vh-theme(space.14))] overflow-y-auto",
+                        className: `w-full overflow-y-auto ${pathname === '/' ? 'pt-16 h-[calc(100vh-theme(space.16))]' // Correct values for FYP
+                         : 'pt-14 h-[calc(100vh-theme(space.14))]' // Original values for other pages
+                        }`,
                         children: isSearchActive && activeSearchQuery.trim() ? // Render VideoGrid with the search query when search is active
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$VideoGrid$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["VideoGrid"], {
                             searchQuery: activeSearchQuery
                         }, void 0, false, {
                             fileName: "[project]/src/components/MainLayout.tsx",
-                            lineNumber: 66,
+                            lineNumber: 73,
                             columnNumber: 13
                         }, this) : // Render the normal page content (children)
                         children
                     }, void 0, false, {
                         fileName: "[project]/src/components/MainLayout.tsx",
-                        lineNumber: 63,
+                        lineNumber: 66,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/MainLayout.tsx",
-                lineNumber: 56,
+                lineNumber: 58,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/MainLayout.tsx",
-        lineNumber: 36,
+        lineNumber: 38,
         columnNumber: 5
     }, this);
 }
-_s(MainLayout, "DQEwElShIYYlkx6PdUS4v6MigSM=");
+_s(MainLayout, "DIVz404dTfdoPRsZw3Nb+sXBi7E=", false, function() {
+    return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"]
+    ];
+});
 _c = MainLayout;
 var _c;
 __turbopack_context__.k.register(_c, "MainLayout");

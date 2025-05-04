@@ -286,17 +286,35 @@ body {
   padding-right: 1rem;
 }
 
+.\!container {
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
 @media (width >= 640px) {
   .container {
     max-width: 640px;
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
+  .\!container {
+    max-width: 640px !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
 }
 
 @media (width >= 768px) {
   .container {
     max-width: 768px;
+  }
+
+  .\!container {
+    max-width: 768px !important;
   }
 }
 
@@ -306,6 +324,12 @@ body {
     padding-left: 4rem;
     padding-right: 4rem;
   }
+
+  .\!container {
+    max-width: 1024px !important;
+    padding-left: 4rem !important;
+    padding-right: 4rem !important;
+  }
 }
 
 @media (width >= 1280px) {
@@ -314,6 +338,12 @@ body {
     padding-left: 5rem;
     padding-right: 5rem;
   }
+
+  .\!container {
+    max-width: 1280px !important;
+    padding-left: 5rem !important;
+    padding-right: 5rem !important;
+  }
 }
 
 @media (width >= 1536px) {
@@ -321,6 +351,12 @@ body {
     max-width: 1536px;
     padding-left: 6rem;
     padding-right: 6rem;
+  }
+
+  .\!container {
+    max-width: 1536px !important;
+    padding-left: 6rem !important;
+    padding-right: 6rem !important;
   }
 }
 
@@ -530,6 +566,11 @@ body {
 .mx-2 {
   margin-left: .5rem;
   margin-right: .5rem;
+}
+
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .mx-auto {
@@ -787,10 +828,6 @@ body {
 
 .h-\[72px\] {
   height: 72px;
-}
-
-.h-\[calc\(100vh-theme\(space\.14\)\)\] {
-  height: calc(100vh - 3.5rem);
 }
 
 .h-\[var\(--radix-select-trigger-height\)\] {
@@ -1129,6 +1166,10 @@ body {
   scroll-snap-align: start;
 }
 
+.snap-always {
+  scroll-snap-stop: always;
+}
+
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -1303,14 +1344,6 @@ body {
 
 .overflow-x-hidden {
   overflow-x: hidden;
-}
-
-.overflow-y-scroll {
-  overflow-y: scroll;
-}
-
-.scroll-smooth {
-  scroll-behavior: smooth;
 }
 
 .truncate {
@@ -1542,6 +1575,10 @@ body {
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
 }
 
+.bg-black\/30 {
+  background-color: #0000004d;
+}
+
 .bg-black\/40 {
   background-color: #0006;
 }
@@ -1722,8 +1759,8 @@ body {
   background-color: #fffc;
 }
 
-.bg-black\/30 {
-  background-color: #0000004d;
+.bg-muted\/30 {
+  background-color: hsl(var(--muted) / .3);
 }
 
 .bg-gradient-to-l {
@@ -1986,6 +2023,10 @@ body {
 
 .pt-14 {
   padding-top: 3.5rem;
+}
+
+.pt-16 {
+  padding-top: 4rem;
 }
 
 .pt-2 {

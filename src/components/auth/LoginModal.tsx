@@ -81,29 +81,25 @@ export function LoginModal({ isOpen, onOpenChange, onSwitchToSignup }: LoginModa
         <DialogHeader className="p-6 pb-4"> {/* Add padding back here */}
           <DialogTitle className="text-2xl font-bold text-center">Log in to FanTok</DialogTitle>
           {/* No description needed */}
-        </DialogHeader>
+         </DialogHeader>
 
-        <div className="p-6 pt-0 space-y-3"> {/* Content padding and spacing */}
+        <div className="p-6 pt-0 space-y-4"> {/* Increased spacing */}
           {/* Login Options */}
-          <Button variant="outline" className="w-full justify-start gap-3 text-base py-6" disabled>
-            <FaQrcode className="w-5 h-5" /> Use QR code
+          {/* Removed QR Code Button */}
+          <Button variant="outline" className="w-full justify-start gap-3 text-base py-4" onClick={() => setShowEmailForm(true)}> {/* Reverted variant to outline */}
+            <FaUser className="w-5 h-5" /> Log in with Email / Username
           </Button>
-          <Button variant="outline" className="w-full justify-start gap-3 text-base py-6" onClick={() => setShowEmailForm(true)}>
-            <FaUser className="w-5 h-5" /> Use phone / email / username
+          {/* Removed Facebook Button */}
+          <Button variant="outline" className="w-full justify-start gap-3 text-base py-4" onClick={handleGoogleLogin} disabled={isLoading}> {/* Reverted variant to outline */}
+            {isLoading ? <Loader2 className="w-5 h-5 mr-2 animate-spin"/> : <FaGoogle className="w-5 h-5" />} Log in with Google
           </Button>
-          <Button variant="outline" className="w-full justify-start gap-3 text-base py-6" disabled>
-            <FaFacebook className="w-5 h-5 text-[#1877F2]" /> Continue with Facebook
-          </Button>
-          <Button variant="outline" className="w-full justify-start gap-3 text-base py-6" onClick={handleGoogleLogin} disabled={isLoading}>
-            {isLoading ? <Loader2 className="w-5 h-5 mr-2 animate-spin"/> : <FaGoogle className="w-5 h-5" />} Continue with Google
-          </Button>
-          <Button variant="outline" className="w-full justify-start gap-3 text-base py-6" disabled>
-            <FaApple className="w-5 h-5" /> Continue with Apple
+          <Button variant="outline" className="w-full justify-start gap-3 text-base py-4" disabled> {/* Reverted variant to outline */}
+            <FaApple className="w-5 h-5" /> Log in with Apple
           </Button>
 
           {/* Email/Password Form (Conditional) */}
           {showEmailForm && (
-            <form onSubmit={handleEmailLogin} className="space-y-4 pt-4 border-t">
+            <form onSubmit={handleEmailLogin} className="space-y-4 p-4 mt-4 border-t bg-muted/30 rounded-md"> {/* Added padding, margin-top, background, border-radius */}
               <h3 className="font-semibold text-center">Log in with Email</h3>
               <div className="space-y-1">
                 <Label htmlFor="login-email">Email</Label>
@@ -116,19 +112,19 @@ export function LoginModal({ isOpen, onOpenChange, onSwitchToSignup }: LoginModa
               {error && <p className="text-sm text-red-500">{error}</p>}
               <Button type="submit" disabled={isLoading || !email || !password} className="w-full">
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Log in
-              </Button>
-              <Button type="button" variant="ghost" size="sm" onClick={() => setShowEmailForm(false)} className="w-full text-muted-foreground">
-                 Back to options
-              </Button>
-            </form>
+                 Log in
+               </Button>
+               <Button type="button" variant="outline" size="sm" onClick={() => setShowEmailForm(false)} className="w-full text-muted-foreground"> {/* Changed variant to outline */}
+                  Back to options
+               </Button>
+             </form>
           )}
         </div>
 
         {/* Footer */}
         <DialogFooter className="p-6 pt-4 bg-muted/50 border-t text-center">
           <p className="text-xs text-muted-foreground">
-            By continuing, you agree to TikTok's <a href="#" className="underline">Terms of Service</a> and confirm that you have read TikTok's <a href="#" className="underline">Privacy Policy</a>.
+            By continuing, you agree to our <a href="/terms" target="_blank" rel="noopener noreferrer" className="underline">Terms of Service</a> and confirm you have read our <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline">Privacy Policy</a>.
           </p>
           <div className="mt-4 text-center text-sm w-full">
              Don't have an account?{' '}

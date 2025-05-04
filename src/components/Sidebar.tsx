@@ -61,7 +61,8 @@ export function Sidebar({ toggleSearchPanel, deactivateSearch }: SidebarProps) {
           <NavItem href={profileHref} icon={<FaUser size={20} />} label="Profile" onClick={deactivateSearch} />
         </div>
 
-        <Separator className="my-4" />
+        {/* Custom div acting as separator */}
+        <div className="h-[1px] bg-border mx-4 my-4"></div>
 
         {/* Following Users List */}
         <NavGroup title="Following">

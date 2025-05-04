@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { usePathname } from 'next/navigation'; // Import usePathname
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { SearchPanel } from "./SearchPanel";
@@ -15,6 +16,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   const [activeSearchQuery, setActiveSearchQuery] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isSearchPanelVisible, setIsSearchPanelVisible] = useState(false); // State for the panel
+  const pathname = usePathname(); // Get the current path
 
   // Toggle search panel visibility
   const toggleSearchPanel = () => {
@@ -52,15 +54,20 @@ export function MainLayout({ children }: MainLayoutProps) {
          />
       )}
 
-      {/* Main content area - Adjust margin based on search panel visibility */}
-      <div className={`w-full transition-all duration-200 ease-in-out ${isSearchPanelVisible ? 'ml-[540px]' : 'ml-[240px]'}`}> {/* Adjust margin: 240 + 300 = 540 */}
-        {/* Fixed header */}
+      {/* Main content area - Make it a flex column to manage vertical space */}
+      <div className={`flex flex-col w-full transition-all duration-200 ease-in-out ${isSearchPanelVisible ? 'ml-[540px]' : 'ml-[240px]'}`}> {/* Adjust margin: 240 + 300 = 540 */}
+        {/* Fixed header (doesn't participate in flex flow) */}
         <div className={`fixed top-0 right-0 transition-all duration-200 ease-in-out z-10 ${isSearchPanelVisible ? 'left-[540px]' : 'left-[240px]'}`}>
           <Header />
         </div>
 
-        {/* Conditional Content: Render Search Results or Page Content */}
-        <div className="w-full pt-14 h-[calc(100vh-theme(space.14))] overflow-y-auto">
+        {/* Content Wrapper - Let it grow to fill space */}
+        {/* Apply padding-top and background conditionally. Remove explicit height, add flex-1 */}
+        <div className={`flex-1 w-full overflow-y-auto ${
+          pathname === '/'
+            ? 'pt-16 bg-black' // Padding for header, bg for FYP
+            : 'pt-14' // Padding for header, default bg
+        }`}>
           {isSearchActive && activeSearchQuery.trim() ? (
             // Render VideoGrid with the search query when search is active
             <VideoGrid searchQuery={activeSearchQuery} />

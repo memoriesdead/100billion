@@ -52,9 +52,9 @@ const formatPrice = (priceInCents: number, currency: string = 'usd') => {
    }).format(priceInCents / 100);
  };
 
-// Helper function to format time (e.g., 0:05, 1:23)
-const formatTime = (timeInSeconds: number): string => {
-  if (isNaN(timeInSeconds) || timeInSeconds < 0) {
+ // Helper function to format time (e.g., 0:05, 1:23)
+ const formatTime = (timeInSeconds: number): string => {
+   if (isNaN(timeInSeconds) || timeInSeconds < 0) {
     return "0:00"; // Return default or error state
   }
   const minutes = Math.floor(timeInSeconds / 60);
@@ -111,6 +111,7 @@ const formatTime = (timeInSeconds: number): string => {
    const [isScrubbing, setIsScrubbing] = useState(false); // State for scrubbing
    const [currentTimeFormatted, setCurrentTimeFormatted] = useState("0:00"); // State for current time display
    const [showOverlayOnEnd, setShowOverlayOnEnd] = useState(false); // State to show overlay on video end
+   const [videoBounds, setVideoBounds] = useState({ top: 0, left: 0, width: 0, height: 0 }); // State for calculated video bounds
 
    // Determine lock status
    const isContentLocked = (is_for_sale && !isOwner) || (isSubLocked && !isOwner);
@@ -202,13 +203,73 @@ const formatTime = (timeInSeconds: number): string => {
     }
   }, [isScrubbing]); // Add isScrubbing dependency
 
+  // Function to calculate the rendered video bounds
+  const calculateVideoBounds = useCallback(() => {
+    const video = videoRef.current;
+    // Use the parent of the video element as the container for bounds calculation
+    const container = video?.parentElement;
+
+    if (video && container && video.videoWidth > 0 && video.videoHeight > 0) {
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+      const videoRatio = video.videoWidth / video.videoHeight;
+      const containerRatio = containerWidth / containerHeight;
+
+      let renderedWidth = containerWidth;
+      let renderedHeight = containerHeight;
+      let top = 0;
+      let left = 0;
+
+      if (videoRatio > containerRatio) {
+        // Video is wider than container (letterboxed top/bottom)
+        renderedHeight = containerWidth / videoRatio;
+        top = (containerHeight - renderedHeight) / 2;
+      } else {
+        // Video is taller than container (pillarboxed left/right)
+        renderedWidth = containerHeight * videoRatio;
+        left = (containerWidth - renderedWidth) / 2;
+      }
+
+      setVideoBounds({
+        top: Math.round(top), // Round to nearest pixel
+        left: Math.round(left),
+        width: Math.round(renderedWidth),
+        height: Math.round(renderedHeight),
+      });
+    } else {
+      // Reset or set default if video/container not ready
+      setVideoBounds({ top: 0, left: 0, width: container?.offsetWidth ?? 0, height: container?.offsetHeight ?? 0 });
+    }
+  }, []); // Dependencies: videoRef (implicitly via videoRef.current)
+
+  // Recalculate bounds when video metadata is loaded
   const handleLoadedMetadata = useCallback(() => {
     if (isContentLockedRef.current) return; // Use ref
     const video = videoRef.current;
     if (!video) return;
      setDuration(video.duration); // Update state, which updates durationRef via its effect
      setCurrentTimeFormatted(formatTime(0)); // Reset time display on new video load
-   }, []); // No dependencies needed as it uses refs
+     calculateVideoBounds(); // Calculate bounds now that dimensions are known
+   }, [calculateVideoBounds]); // Added calculateVideoBounds dependency
+
+  // Recalculate bounds on container resize
+  useEffect(() => {
+    const container = videoRef.current?.parentElement; // Get container
+    if (!container) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      calculateVideoBounds();
+    });
+
+    resizeObserver.observe(container);
+
+    // Initial calculation in case metadata loaded before effect ran
+    calculateVideoBounds();
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [calculateVideoBounds]); // Re-run if the calculation function changes
 
   // Seek handler for progress bar click
   const handleSeek = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
@@ -267,9 +328,7 @@ const formatTime = (timeInSeconds: number): string => {
   }, [isForYouPage]);
 
   // Scrubbing handlers
-  // Removed useCallback to avoid potential closure issues with isScrubbing state inside listeners
   const handleScrubMove = (event: MouseEvent) => {
-    // Check isScrubbing state directly
     if (!isScrubbing || isContentLockedRef.current) return;
 
     const progressBarContainer = progressBarContainerRef.current;
@@ -279,73 +338,49 @@ const formatTime = (timeInSeconds: number): string => {
     if (!progressBarContainer || !video || !currentDuration || currentDuration <= 0) return;
 
     const rect = progressBarContainer.getBoundingClientRect();
-    // Calculate position relative to the progress bar
     const clientX = event.clientX;
     const scrubX = clientX - rect.left;
     const barWidth = rect.width;
-
-    // Calculate percentage and clamp between 0 and 1
     const scrubPercentage = Math.max(0, Math.min(1, scrubX / barWidth));
     const seekTime = scrubPercentage * currentDuration;
 
-    // Update video time directly
     video.currentTime = seekTime;
-
-    // Update progress state for visual feedback during scrub
     setProgress(scrubPercentage * 100);
-    // Update hover time preview as well
     setHoverTime(seekTime);
-    setCurrentTimeFormatted(formatTime(seekTime)); // Update time display during scrub
+    setCurrentTimeFormatted(formatTime(seekTime));
+  };
 
-  }; // Removed useCallback and dependency
-
-  // Removed useCallback
   const handleScrubEnd = () => {
-    // Check isScrubbing state directly
     if (!isScrubbing) return;
     setIsScrubbing(false);
-    // Remove global listeners - ensure the function reference is correct
     document.removeEventListener('mousemove', handleScrubMove);
     document.removeEventListener('mouseup', handleScrubEnd);
-    // Optional: Resume playback if it was paused due to scrubbing (if needed)
-    // const video = videoRef.current;
-    // if (video && video.paused) {
-    //   video.play().catch(e => console.error("Error resuming play after scrub:", e));
-    // }
-  }; // Removed useCallback and dependencies
+  };
 
   const handleMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     if (isContentLockedRef.current) return;
-
     setIsScrubbing(true);
-    setShowOverlayOnEnd(false); // Hide overlay when scrubbing starts
-    // Immediately seek to the clicked position using the existing handleSeek logic
-    handleSeek(event);
-    // Add global listeners for mouse move and up
-    // Add listeners - these will now reference the non-memoized functions
+    setShowOverlayOnEnd(false);
+    handleSeek(event); // Seek immediately on mouse down
     document.addEventListener('mousemove', handleScrubMove);
     document.addEventListener('mouseup', handleScrubEnd);
-  // Update dependencies: handleSeek is memoized, others are not but stable references
-  }, [handleSeek, handleScrubMove, handleScrubEnd]); // Added handleScrubMove and handleScrubEnd
+  }, [handleSeek, handleScrubMove, handleScrubEnd]); // Corrected dependencies
 
   // Cleanup global listeners on component unmount
   useEffect(() => {
-    // Define the cleanup function referencing the potentially non-memoized handlers
     const cleanup = () => {
       document.removeEventListener('mousemove', handleScrubMove);
       document.removeEventListener('mouseup', handleScrubEnd);
     };
     return cleanup;
-   }, [handleScrubMove, handleScrubEnd]); // Added handleScrubMove and handleScrubEnd
+   }, [handleScrubMove, handleScrubEnd]); // Corrected dependencies
 
-   // Temporarily comment out Intersection Observer and Watch Time Reporting Effect for debugging
+   // Intersection Observer and Watch Time Reporting Effect
    useEffect(() => {
     const videoElement = videoRef.current;
-    // Use ref for isContentLocked check
     if (isContentLockedRef.current || !videoElement || !objectUrl) return;
 
     // --- Playback control based on isActive prop ---
-    // If isActive is explicitly provided (not undefined), use it to control playback directly.
     if (typeof isActive !== 'undefined') {
       if (isActive) {
         videoElement.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
@@ -355,15 +390,11 @@ const formatTime = (timeInSeconds: number): string => {
           setIsPlaying(false);
         }
       }
-      // Skip IntersectionObserver setup if isActive is controlling playback
       return () => { /* No observer cleanup needed */ };
     }
     // --- Fallback to IntersectionObserver if isActive is not provided ---
 
-    // Define the reporting function *inside* the effect's cleanup
-    // This ensures it runs with the values captured at the time of cleanup
     const reportWatchTimeOnCleanup = async () => {
-      // Access latest values via refs
       const currentDuration = durationRef.current;
       const currentAccumulatedTime = accumulatedWatchTimeMsRef.current;
       const currentContentLocked = isContentLockedRef.current;
@@ -377,7 +408,7 @@ const formatTime = (timeInSeconds: number): string => {
         watchIntervalRef.current = null;
       }
       const payload = {
-        post_id: id, // id is stable from props
+        post_id: id,
         watch_time_ms: Math.round(currentAccumulatedTime),
         video_duration_ms: Math.round(currentDuration * 1000),
       };
@@ -397,24 +428,23 @@ const formatTime = (timeInSeconds: number): string => {
         console.log(`Successfully reported watch time for post ${id} (Cleanup)`);
       } catch (error) {
         console.error(`Failed to report watch time for post ${id} (Cleanup):`, error);
-        reportedWatchTimeRef.current = false; // Allow retry if failed
+        reportedWatchTimeRef.current = false;
       }
     };
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         const currentlyVisible = entry.isIntersecting;
-        setIsVisible(currentlyVisible); // Update state for the interval effect
+        setIsVisible(currentlyVisible);
 
         if (currentlyVisible) {
-          reportedWatchTimeRef.current = false; // Reset flag when visible again
+          reportedWatchTimeRef.current = false;
           videoElement.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
         } else {
           if (!videoElement.paused) {
             videoElement.pause();
             setIsPlaying(false);
           }
-          // Report immediately when scrolling out
           reportWatchTimeOnCleanup();
         }
       },
@@ -423,17 +453,14 @@ const formatTime = (timeInSeconds: number): string => {
 
     observer.observe(videoElement);
 
-    // Cleanup: disconnect observer and report final time
     return () => {
       observer.disconnect();
-      reportWatchTimeOnCleanup(); // Report any remaining time on unmount/cleanup
+      reportWatchTimeOnCleanup();
     };
-    // Minimal dependencies: only need to re-run if the video source or lock status fundamentally changes, or if isActive changes
-   }, [objectUrl, id, isActive]); // Added isActive dependency
+   }, [objectUrl, id, isActive]); // Corrected dependencies
 
-   // Watch Time Accumulation Interval Effect (depends on state)
+   // Watch Time Accumulation Interval Effect
    useEffect(() => {
-    // Use state for interval logic, but refs for reporting logic
     if (isPlaying && isVisible && !isContentLockedRef.current) {
       if (!watchIntervalRef.current) {
         watchIntervalRef.current = setInterval(() => {
@@ -452,7 +479,7 @@ const formatTime = (timeInSeconds: number): string => {
         watchIntervalRef.current = null;
       }
     };
-  }, [isPlaying, isVisible]); // Removed isContentLocked dependency, rely on ref
+  }, [isPlaying, isVisible]); // Corrected dependencies
 
   // Purchase Handler
   const handlePurchase = useCallback(async () => {
@@ -479,18 +506,15 @@ const formatTime = (timeInSeconds: number): string => {
 
   // Profile Click Handler
   const handleProfileClick = () => {
-    // Navigate using the user's username
     router.push(`/profile/${username}`);
    };
 
-   return ( // Ensure return statement is present
+   return (
        <div
          ref={containerRef}
-         // Use flex-col to stack video area and controls area
          className="relative w-full h-full bg-black overflow-hidden group flex flex-col"
        >
         {isContentLocked ? (
-           // Keep locked state centered
            <div className="flex-grow w-full bg-black flex flex-col items-center justify-center text-white relative p-4">
              <div className="flex flex-col items-center justify-center text-center z-10">
                <Lock size={48} className="mb-3 opacity-80" />
@@ -517,38 +541,47 @@ const formatTime = (timeInSeconds: number): string => {
            </div>
          ) : (
            <>
-             {/* Video Area - Takes up available space, shrinks if needed but content is contained */}
-             <div className="relative flex-grow flex-shrink min-h-0"> {/* Container for video + loading/error */}
+             {/* Video Area */}
+             <div className="relative flex-grow flex-shrink min-h-0">
                {isLoading && <div className="absolute inset-0 flex items-center justify-center text-white z-10"><Loader2 className="h-8 w-8 animate-spin" /></div>}
                {errorState && <div className="absolute inset-0 flex items-center justify-center text-red-500 z-10 p-4 text-center">{errorState}</div>}
                <video
                  ref={videoRef} key={objectUrl} src={objectUrl ?? undefined} poster={posterSrc}
-                 // Video fills its container, object-contain handles aspect ratio
                  className={`w-full h-full object-contain ${!objectUrl || isLoading || errorState ? 'invisible' : ''} border-0 bg-black`}
-                 playsInline loop muted={isMuted} onClick={disableClickToPlay ? undefined : togglePlayPause} // Conditionally disable click
-                 onPlay={() => { setIsPlaying(true); setShowOverlayOnEnd(false); }} onPause={() => setIsPlaying(false)} // Reset overlay state on play
-                 onEnded={handleVideoEnd} // Call handler on video end
+                 playsInline loop muted={isMuted} onClick={disableClickToPlay ? undefined : togglePlayPause}
+                 onPlay={() => { setIsPlaying(true); setShowOverlayOnEnd(false); }} onPause={() => setIsPlaying(false)}
+                 onEnded={handleVideoEnd}
                  onLoadedMetadata={handleLoadedMetadata} onTimeUpdate={handleTimeUpdate}
                  onError={(e) => console.error(`Video Error (ID: ${id}):`, (e.target as HTMLVideoElement).error)}
                />
 
-               {/* Conditional Play Button Overlay */}
-               {!isPlaying && !disableClickToPlay && !isContentLocked && objectUrl && !isLoading && !errorState && (
-                 <div
-                   className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer z-20"
-                   onClick={togglePlayPause}
-                   aria-label="Play video"
-                 >
-                   <Play size={64} className="text-white/80" fill="currentColor" />
-                 </div>
-               )}
+               {/* Overlay Container - Positioned exactly over the rendered video */}
+               <div
+                 className="absolute pointer-events-none z-20"
+                 style={{
+                   top: `${videoBounds.top}px`,
+                   left: `${videoBounds.left}px`,
+                   width: `${videoBounds.width}px`,
+                   height: `${videoBounds.height}px`,
+                 }}
+               >
+                 {/* Conditional Play Button Overlay (Centered) */}
+                 {!isPlaying && !disableClickToPlay && !isContentLocked && objectUrl && !isLoading && !errorState && (
+                   <div
+                     className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer pointer-events-auto" // Centered again
+                     onClick={togglePlayPause}
+                     aria-label="Play video"
+                   >
+                     <Play size={64} className="text-white/80" fill="currentColor" />
+                   </div>
+                 )}
 
-               {/* User Info & Caption - Moved to overlay video */}
-               {!isContentLocked && objectUrl && !isLoading && !errorState && (
-                 <div className={`absolute bottom-4 left-4 z-20 text-white pointer-events-auto max-w-[calc(100%-80px)]`}> {/* Position bottom-left, limit width */}
-                   <div className={`flex items-center gap-1.5 group cursor-pointer`} onClick={handleProfileClick} // Use handler
-                      aria-label={`View profile of ${username}`} role="button" tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleProfileClick(); } }} // Use handler
+                 {/* User Info & Caption */}
+                 {!isContentLocked && objectUrl && !isLoading && !errorState && (
+                   <div className={`absolute bottom-12 left-4 text-white pointer-events-auto max-w-[calc(100%-80px)]`}> {/* Changed bottom-4 to bottom-12 */}
+                     <div className={`flex items-center gap-1.5 group cursor-pointer`} onClick={handleProfileClick}
+                        aria-label={`View profile of ${username}`} role="button" tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleProfileClick(); } }}
                     >
                      <Avatar className="h-7 w-7 border border-gray-600 group-hover:scale-110 transition-transform">
                        <AvatarImage src={profilePictureUrl ?? undefined} alt={username ?? 'User profile'} />
@@ -564,22 +597,36 @@ const formatTime = (timeInSeconds: number): string => {
                    )}
                  </div>
                )}
-             </div>
 
-             {/* Controls Area - Sits below video, occupies the gap if present */}
-             {/* Only show controls container if not locked and video is ready */}
-             {/* This now only contains the progress bar */}
-             {!isContentLocked && objectUrl && !isLoading && !errorState && (
-               <div className="relative flex-shrink-0 px-4 pb-2 pt-1 bg-black z-20"> {/* Controls container */}
+               {/* Mute Button */}
+               {objectUrl && !isLoading && !errorState && !isContentLocked && (
+                 <button onClick={toggleMute} className={`absolute bottom-12 right-4 p-2 bg-black/40 rounded-full text-white pointer-events-auto`} aria-label={isMuted ? 'Unmute' : 'Mute'}> {/* Changed bottom-5 to bottom-12 */}
+                   {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                 </button>
+               )}
 
-                 {/* Progress Bar & Time Display Container */}
-                 {/* Conditionally render the entire progress bar section */}
-                 {!hideProgressBar && showControls && duration > 0 && (
-                   <div className="relative"> {/* Container for progress + time, removed mb-2 */}
-                     {/* Progress bar */}
+               {/* Interaction Buttons */}
+               {!isContentLocked && (
+                 <div className={`absolute bottom-20 right-4 pointer-events-auto opacity-100 transition-opacity duration-300`}>
+                   <PostInteractionButtons
+                     postId={id} userId={userId} username={username}
+                     profilePictureUrl={profilePictureUrl ?? undefined}
+                     initialLikes={parseInt(likes, 10) || 0} initialIsLiked={initialIsLiked}
+                     commentsCount={comments} sharesCount={shares}
+                     initialIsPrivate={initialIsPrivate ?? false} postType="video"
+                     isOwner={isOwner ?? false} videoCaption={caption ?? undefined}
+                     is_for_sale={is_for_sale} price={price} currency={currency}
+                     variant={interactionVariant}
+                   />
+                 </div>
+               )}
+
+               {/* Controls Area (Moved inside overlay container) */}
+               {!isContentLocked && objectUrl && !isLoading && !errorState && !hideProgressBar && showControls && duration > 0 && (
+                 <div className="absolute bottom-0 left-0 right-0 px-4 pb-2 pt-1 z-30 pointer-events-none"> {/* Positioned at bottom, removed bg-black, added z-index */}
+                   <div className="relative pointer-events-auto"> {/* Enable pointer events for controls */}
                      <div
-                       ref={progressBarContainerRef}
-                       // Takes full width of controls area, standard height
+                         ref={progressBarContainerRef}
                        className={`relative h-1.5 w-full bg-gray-500/30 cursor-pointer group-hover:opacity-100 transition-opacity duration-200 ${isScrubbing ? 'opacity-100' : 'opacity-70'}`}
                        onClick={handleSeek}
                        onMouseDown={handleMouseDown}
@@ -589,60 +636,32 @@ const formatTime = (timeInSeconds: number): string => {
                      >
                        <div className="absolute top-0 left-0 h-full w-full bg-gray-500/30" />
                        <div
-                         className="absolute top-0 left-0 h-full bg-white/80 transition-colors duration-200 group-hover:bg-white" // Keep hover effect on bar color
+                         className="absolute top-0 left-0 h-full bg-white/80 transition-colors duration-200 group-hover:bg-white"
                          style={{ width: `${progress}%` }}
                        />
-                       {/* Knob always visible when progress bar is visible */}
                        <div
                          className={`absolute top-1/2 w-3 h-3 bg-white rounded-full transform -translate-y-1/2 -translate-x-1/2 pointer-events-none`}
                          style={{ left: `${progress}%` }}
                        />
                        {(isHovering || isScrubbing) && (
                          <div
-                           className="absolute bottom-full mb-1 left-0 transform -translate-x-1/2 px-2 py-0.5 bg-black/70 text-white text-xs rounded whitespace-nowrap z-50 pointer-events-none" // Adjusted margin
+                           className="absolute bottom-full mb-1 left-0 transform -translate-x-1/2 px-2 py-0.5 bg-black/70 text-white text-xs rounded whitespace-nowrap z-50 pointer-events-none"
                            style={{ left: `${(hoverTime / duration) * 100}%` }}
                          >
                            {formatTime(hoverTime)}
                          </div>
                        )}
                      </div>
-                     {/* Time Display - Below progress bar */}
                      <div className={`mt-1 text-white text-xs font-mono pointer-events-none select-none`}>
                        {currentTimeFormatted} / {formatTime(duration)}
                      </div>
                    </div>
-                 )}
-               </div>
-             )}
-
-             {/* --- Absolutely Positioned Overlays --- */}
-             {/* These remain absolutely positioned relative to the main container */}
-
-             {/* Mute Button */}
-             {objectUrl && !isLoading && !errorState && !isContentLocked && (
-               <button onClick={toggleMute} className={`absolute bottom-5 right-4 p-2 bg-black/40 rounded-full text-white z-30 pointer-events-auto`} aria-label={isMuted ? 'Unmute' : 'Mute'}> {/* Adjusted bottom slightly */}
-                 {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-               </button>
-             )}
-
-             {/* Interaction Buttons */}
-             {!isContentLocked && (
-               <div className={`absolute bottom-20 right-4 z-30 pointer-events-auto opacity-100 transition-opacity duration-300`}> {/* Adjusted bottom */}
-                 <PostInteractionButtons
-                   postId={id} userId={userId} username={username}
-                   profilePictureUrl={profilePictureUrl ?? undefined}
-                   initialLikes={parseInt(likes, 10) || 0} initialIsLiked={initialIsLiked}
-                   commentsCount={comments} sharesCount={shares}
-                   initialIsPrivate={initialIsPrivate ?? false} postType="video"
-                   isOwner={isOwner ?? false} videoCaption={caption ?? undefined}
-                   is_for_sale={is_for_sale} price={price} currency={currency}
-                   variant={interactionVariant} // Pass down the variant prop
-                   // viewsCount={...} // Pass viewsCount here when available
-                 />
-               </div>
-             )}
+                 </div>
+               )}
+             </div> {/* Closing tag for the overlay container */}
+             </div> {/* Closing tag for Video Area */}
            </>
          )}
        </div>
-     ); // Ensure closing parenthesis for return is present
- } // Ensure closing brace for component function is present
+     );
+ }
