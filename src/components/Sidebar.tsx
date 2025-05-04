@@ -69,7 +69,13 @@ export function Sidebar({ toggleSearchPanel, deactivateSearch }: SidebarProps) {
           <FollowingList />
         </NavGroup>
 
-        {/* Removed login prompt and footer links */}
+        {/* Legal Links Section */}
+        <div className="mt-6 pt-4 border-t border-border space-y-2 px-4">
+           <NavLink href="/privacy">Privacy Policy</NavLink>
+           <NavLink href="/cookies">Cookie Notice</NavLink>
+           <NavLink href="/terms">Terms of Service</NavLink>
+           <p className="text-xs text-muted-foreground mt-2">© {new Date().getFullYear()} FanTok</p>
+        </div>
       </ScrollArea>
     </div>
   );

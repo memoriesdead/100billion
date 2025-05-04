@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/lib/supabaseClient';
 import { VideoGrid } from './VideoGrid'; // Import VideoGrid
 import { MainLayout } from './MainLayout';
+// Removed LegalFooter import
 
 const FollowingPage = () => {
   const { user } = useAuth();
@@ -71,6 +72,7 @@ const FollowingPage = () => {
           )
         )}
       </div>
+      {/* Removed LegalFooter component */}
     </MainLayout>
   );
 };
